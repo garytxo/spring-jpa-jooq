@@ -24,6 +24,7 @@ import org.jooq.impl.Internal
 // UNIQUE and PRIMARY KEY definitions
 // -------------------------------------------------------------------------
 
+val EMAIL2_UNIQUE: UniqueKey<BlogAuthorRecord> = Internal.createUniqueKey(BlogAuthor.BLOG_AUTHOR, DSL.name("email2_unique"), arrayOf(BlogAuthor.BLOG_AUTHOR.EMAIL), true)
 val PK_BLOG_AUTHOR: UniqueKey<BlogAuthorRecord> = Internal.createUniqueKey(BlogAuthor.BLOG_AUTHOR, DSL.name("pk_blog_author"), arrayOf(BlogAuthor.BLOG_AUTHOR.ID), true)
 val PK_BLOG_POST: UniqueKey<BlogPostRecord> = Internal.createUniqueKey(BlogPost.BLOG_POST, DSL.name("pk_blog_post"), arrayOf(BlogPost.BLOG_POST.ID), true)
 val PK_POST_CATEGORY: UniqueKey<PostCategoryRecord> = Internal.createUniqueKey(PostCategory.POST_CATEGORY, DSL.name("pk_post_category"), arrayOf(PostCategory.POST_CATEGORY.ID), true)

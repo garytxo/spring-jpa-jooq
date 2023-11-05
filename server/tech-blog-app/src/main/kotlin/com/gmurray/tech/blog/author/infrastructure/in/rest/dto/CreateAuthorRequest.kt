@@ -17,5 +17,12 @@ class CreateAuthorRequest(
         title = "Last name",
         example = "Bloggs"
     )
-    val lastName: String
+    val lastName: String,
+
+    @field:Schema(
+        name = "email", required = true,
+        title = "User email address",
+        example = "joe.blogs@test.com"
+    )
+    val email: String
 )

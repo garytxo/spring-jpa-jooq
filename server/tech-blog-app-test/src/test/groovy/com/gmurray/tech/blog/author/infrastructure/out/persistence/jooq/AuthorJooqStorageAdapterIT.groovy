@@ -19,11 +19,16 @@ class AuthorJooqStorageAdapterIT extends Specification {
     @Autowired
     BlogPostTestDataCreator blogPostTestDataCreator
 
+    def cleanup() {
+        blogPostTestDataCreator.cleanUp()
+    }
+
     def "create should create new author with command"() {
         given:
         def firstName = "Fname"
         def lastName = "Lname"
-        def command = new CreateAuthorUseCase.NewAuthorCommand(firstName,lastName)
+        def email = "email@email.com"
+        def command = new CreateAuthorUseCase.NewAuthorCommand(firstName,lastName,email)
 
         when:
         def result = authorJooqStorageAdapter.create(command)

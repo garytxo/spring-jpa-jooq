@@ -21,6 +21,7 @@ interface IBlogAuthor : Serializable {
     var rowCreatedOn: LocalDateTime?
     var rowUpdatedBy: String?
     var rowUpdatedOn: LocalDateTime?
+    var email: String?
 
     // -------------------------------------------------------------------------
     // FROM and INTO

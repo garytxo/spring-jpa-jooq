@@ -34,6 +34,7 @@ open class AuthorJpaStorageAdapter(private val authorJpaRepository: AuthorJpaRep
     private fun CreateAuthorUseCase.NewAuthorCommand.toJpa() =
         AuthorJpaEntity(
             firstName = this.firstName,
-            lastName = this.lastName
+            lastName = this.lastName,
+            email = this.email
         )
 }

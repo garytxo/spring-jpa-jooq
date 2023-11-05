@@ -21,7 +21,8 @@ data class BlogAuthor(
     override var rowCreatedBy: String? = null,
     override var rowCreatedOn: LocalDateTime? = null,
     override var rowUpdatedBy: String? = null,
-    override var rowUpdatedOn: LocalDateTime? = null
+    override var rowUpdatedOn: LocalDateTime? = null,
+    override var email: String? = null
 ): IBlogAuthor {
 
 
@@ -81,6 +82,12 @@ data class BlogAuthor(
         }
         else if (this.rowUpdatedOn != o.rowUpdatedOn)
             return false
+        if (this.email == null) {
+            if (o.email != null)
+                return false
+        }
+        else if (this.email != o.email)
+            return false
         return true
     }
 
@@ -95,6 +102,7 @@ data class BlogAuthor(
         result = prime * result + (if (this.rowCreatedOn == null) 0 else this.rowCreatedOn.hashCode())
         result = prime * result + (if (this.rowUpdatedBy == null) 0 else this.rowUpdatedBy.hashCode())
         result = prime * result + (if (this.rowUpdatedOn == null) 0 else this.rowUpdatedOn.hashCode())
+        result = prime * result + (if (this.email == null) 0 else this.email.hashCode())
         return result
     }
 
@@ -109,6 +117,7 @@ data class BlogAuthor(
         sb.append(", ").append(rowCreatedOn)
         sb.append(", ").append(rowUpdatedBy)
         sb.append(", ").append(rowUpdatedOn)
+        sb.append(", ").append(email)
 
         sb.append(")")
         return sb.toString()
@@ -127,6 +136,7 @@ data class BlogAuthor(
         rowCreatedOn = from.rowCreatedOn
         rowUpdatedBy = from.rowUpdatedBy
         rowUpdatedOn = from.rowUpdatedOn
+        email = from.email
     }
 
     override fun <E : IBlogAuthor> into(into: E): E {

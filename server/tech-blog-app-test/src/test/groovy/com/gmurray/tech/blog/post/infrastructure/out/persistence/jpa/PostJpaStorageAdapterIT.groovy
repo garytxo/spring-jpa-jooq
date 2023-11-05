@@ -1,5 +1,7 @@
 package com.gmurray.tech.blog.post.infrastructure.out.persistence.jpa
 
+import com.gmurray.tech.blog.fixtures.persistence.BlogPostTestData
+import com.gmurray.tech.blog.fixtures.persistence.BlogPostTestDataCreator
 import com.gmurray.tech.blog.fixtures.slices.JpaDbTest
 import com.gmurray.tech.blog.infrastructure.persistence.jpa.AuthorJpaEntity
 import com.gmurray.tech.blog.infrastructure.persistence.jpa.AuthorJpaRepository
@@ -14,11 +16,16 @@ import spock.lang.Specification
 @ActiveProfiles(["test","jpa"])
 class PostJpaStorageAdapterIT extends Specification {
 
-    @Autowired
-    AuthorJpaRepository authorJpaRepository
 
     @Autowired
     PostJpaStorageAdapter postJpaStorageAdapter
+
+    @Autowired
+    BlogPostTestDataCreator blogPostTestDataCreator
+
+    def cleanup() {
+        blogPostTestDataCreator.cleanUp()
+    }
 
     def "create should throw error when author does not exist"(){
 
@@ -41,12 +48,12 @@ class PostJpaStorageAdapterIT extends Specification {
     def "create should create new post for author"(){
 
         given:
-        def author = createAuthor("Joe","Test")
+        def authorId = createAuthor("Joe","Test")
         def title = "post title"
         def description = "post description"
         def tags = ["Tag","Tag2"].toSet()
         def categories = [Categories.ENTERTAINMENT].toSet()
-        def command = new CreateBlogPostUseCase.NewBlogPostCommand(author.id,title,description,tags,categories)
+        def command = new CreateBlogPostUseCase.NewBlogPostCommand(authorId,title,description,tags,categories)
 
         when:
         def result = postJpaStorageAdapter.create(command)
@@ -56,9 +63,15 @@ class PostJpaStorageAdapterIT extends Specification {
 
     }
 
-    def createAuthor(String fname="fname", String lname="lname"){
-        def author = new AuthorJpaEntity(null,fname,lname)
-        return authorJpaRepository.save(author)
+
+    def createAuthor(String fname = "fname", String lname = "lname") {
+        def testData = new BlogPostTestData()
+        testData.blogAuthor.firstName = fname
+        testData.blogAuthor.lastName = lname
+
+        blogPostTestDataCreator.createBlogAuthorWith(testData)
+
+        return testData.blogAuthor.id
     }
 
 }

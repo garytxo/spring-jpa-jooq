@@ -41,8 +41,11 @@ class BlogPostTestDataCreator {
 
     def cleanUp() {
 
-        def deleted = dslContext.deleteFrom(BlogPost.@Companion.BLOG_POST).execute()
-        println("BlogPostTestDataCreator:: clean up blog posts:${deleted}")
+        def postDeleted = dslContext.deleteFrom(BlogPost.@Companion.BLOG_POST).execute()
+        println("BlogPostTestDataCreator:: removed:${postDeleted} blog posts")
+
+        def authorDeleted = dslContext.deleteFrom(BlogAuthor.@Companion.BLOG_AUTHOR).execute()
+        println("BlogPostTestDataCreator:: removed:${authorDeleted} blog authors")
     }
 
     @Transactional
@@ -50,6 +53,10 @@ class BlogPostTestDataCreator {
 
         persist(blogPostTestData.blogAuthor)
         persist(blogPostTestData.blogPost)
+    }
+
+    def createBlogAuthorWith(BlogPostTestData blogPostTestData) {
+        persist(blogPostTestData.blogAuthor)
 
     }
 
@@ -106,13 +113,14 @@ class BlogPostTestDataCreator {
                 .columns(BlogAuthor.@Companion.BLOG_AUTHOR.ID,
                         BlogAuthor.@Companion.BLOG_AUTHOR.FIRST_NAME,
                         BlogAuthor.@Companion.BLOG_AUTHOR.LAST_NAME,
+                        BlogAuthor.@Companion.BLOG_AUTHOR.EMAIL,
 
                         //Need to add because the audit listener is not picked up using the dsl
                         BlogAuthor.@Companion.BLOG_AUTHOR.ROW_CREATED_BY,
                         BlogAuthor.@Companion.BLOG_AUTHOR.ROW_CREATED_ON
                     )
                 .values(
-                        authorTestData.id, authorTestData.firstName,authorTestData.lastName,
+                        authorTestData.id, authorTestData.firstName,authorTestData.lastName,authorTestData.email,
                         jooqUserAuditAwareService.currentUserId,
                         LocalDateTime.now()
                 )

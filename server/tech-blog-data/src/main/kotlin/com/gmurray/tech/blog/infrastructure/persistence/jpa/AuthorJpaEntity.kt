@@ -24,7 +24,11 @@ class AuthorJpaEntity(
     val firstName: String,
 
     @Column(name = "last_name")
-    val lastName: String
+    val lastName: String,
+
+    @Column(name = "email")
+    val email:String,
+
 ) : AbstractJpaPersistableEntity<String>()
 
 {

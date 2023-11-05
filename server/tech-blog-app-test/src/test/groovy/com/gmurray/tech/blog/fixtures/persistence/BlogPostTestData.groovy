@@ -42,16 +42,29 @@ class PostTestData {
     }
 
 
+    @Override
+    public String toString() {
+        return "PostTestData{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", authorId=" + authorId +
+                ", status=" + status +
+                ", categories=" + categories +
+                '}';
+    }
 }
 
 class AuthorTestData{
     Long id
     String firstName
     String lastName
-    AuthorTestData(Long id = 1L, String firstName= "Joe", String lastName= "Bloggs") {
+    String email
+    AuthorTestData(Long id = 1L, String firstName= "Joe", String lastName= "Bloggs",String email="joe.blogg1@test.com") {
         this.id = id
         this.firstName = firstName
         this.lastName = lastName
+        this.email = email
     }
 
 
@@ -61,6 +74,7 @@ class AuthorTestData{
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

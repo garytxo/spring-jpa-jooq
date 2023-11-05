@@ -16,8 +16,9 @@ class CreateAuthorCommandHandlerTest extends Specification {
         def id = 11L
         def expectedAuthorId = new AuthorId(id)
         def firstName = "Gary"
-        def lastName = "Murr"
-        def command = new CreateAuthorUseCase.NewAuthorCommand(firstName,lastName)
+        def lastName = "Murray"
+        def email = "gary@mail.com"
+        def command = new CreateAuthorUseCase.NewAuthorCommand(firstName,lastName,email)
 
         when:
         def result = createAuthorCommandHandler.create(command)

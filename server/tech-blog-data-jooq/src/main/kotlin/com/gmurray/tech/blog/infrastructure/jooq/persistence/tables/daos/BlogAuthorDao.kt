@@ -122,4 +122,20 @@ open class BlogAuthorDao(configuration: Configuration?) : DAOImpl<BlogAuthorReco
      * Fetch records that have <code>row_updated_on IN (values)</code>
      */
     fun fetchByRowUpdatedOn(vararg values: LocalDateTime): List<com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogAuthor> = fetch(BlogAuthor.BLOG_AUTHOR.ROW_UPDATED_ON, *values)
+
+    /**
+     * Fetch records that have <code>email BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    fun fetchRangeOfEmail(lowerInclusive: String?, upperInclusive: String?): List<com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogAuthor> = fetchRange(BlogAuthor.BLOG_AUTHOR.EMAIL, lowerInclusive, upperInclusive)
+
+    /**
+     * Fetch records that have <code>email IN (values)</code>
+     */
+    fun fetchByEmail(vararg values: String): List<com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogAuthor> = fetch(BlogAuthor.BLOG_AUTHOR.EMAIL, *values)
+
+    /**
+     * Fetch a unique record that has <code>email = value</code>
+     */
+    fun fetchOneByEmail(value: String): com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogAuthor? = fetchOne(BlogAuthor.BLOG_AUTHOR.EMAIL, value)
 }

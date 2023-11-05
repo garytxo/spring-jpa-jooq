@@ -208,13 +208,6 @@
                                             <enumConverter>true</enumConverter>
                                             <includeExpression>blog_post.status</includeExpression>
                                         </forcedType>
-                                        <!--
-                                        <forcedType>
-                                            <userType>com.gmurray.tech.blog.infrastructure.persistence.shared.BlogPostCategory</userType>
-                                            <enumConverter>true</enumConverter>
-                                            <includeExpression>blog_post.category</includeExpression>
-                                        </forcedType>
-                                         -->
                                     </forcedTypes>
                                 </database>
                                 <target>

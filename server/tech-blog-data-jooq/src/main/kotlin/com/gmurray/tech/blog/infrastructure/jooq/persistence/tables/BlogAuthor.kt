@@ -5,11 +5,14 @@ package com.gmurray.tech.blog.infrastructure.jooq.persistence.tables
 
 
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.TechBlog
+import com.gmurray.tech.blog.infrastructure.jooq.persistence.keys.EMAIL2_UNIQUE
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.keys.PK_BLOG_AUTHOR
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.records.BlogAuthorRecord
 
 import java.time.LocalDateTime
 import java.util.function.Function
+
+import kotlin.collections.List
 
 import org.jooq.Field
 import org.jooq.ForeignKey
@@ -17,7 +20,7 @@ import org.jooq.Identity
 import org.jooq.Name
 import org.jooq.Record
 import org.jooq.Records
-import org.jooq.Row8
+import org.jooq.Row9
 import org.jooq.Schema
 import org.jooq.SelectField
 import org.jooq.Table
@@ -103,6 +106,11 @@ open class BlogAuthor(
      */
     val ROW_UPDATED_ON: TableField<BlogAuthorRecord, LocalDateTime?> = createField(DSL.name("row_updated_on"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "")
 
+    /**
+     * The column <code>tech_blog.blog_author.email</code>.
+     */
+    val EMAIL: TableField<BlogAuthorRecord, String?> = createField(DSL.name("email"), SQLDataType.VARCHAR(300).nullable(false), this, "")
+
     private constructor(alias: Name, aliased: Table<BlogAuthorRecord>?): this(alias, null, null, aliased, null)
     private constructor(alias: Name, aliased: Table<BlogAuthorRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, aliased, parameters)
 
@@ -125,6 +133,7 @@ open class BlogAuthor(
     override fun getSchema(): Schema? = if (aliased()) null else TechBlog.TECH_BLOG
     override fun getIdentity(): Identity<BlogAuthorRecord, Long?> = super.getIdentity() as Identity<BlogAuthorRecord, Long?>
     override fun getPrimaryKey(): UniqueKey<BlogAuthorRecord> = PK_BLOG_AUTHOR
+    override fun getUniqueKeys(): List<UniqueKey<BlogAuthorRecord>> = listOf(EMAIL2_UNIQUE)
     override fun getRecordVersion(): TableField<BlogAuthorRecord, Int?> = ROW_VERSION
     override fun getRecordTimestamp(): TableField<BlogAuthorRecord, LocalDateTime?> = ROW_CREATED_ON
     override fun `as`(alias: String): BlogAuthor = BlogAuthor(DSL.name(alias), this)
@@ -147,18 +156,18 @@ open class BlogAuthor(
     override fun rename(name: Table<*>): BlogAuthor = BlogAuthor(name.getQualifiedName(), null)
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
-    override fun fieldsRow(): Row8<Long?, String?, String?, Int?, String?, LocalDateTime?, String?, LocalDateTime?> = super.fieldsRow() as Row8<Long?, String?, String?, Int?, String?, LocalDateTime?, String?, LocalDateTime?>
+    override fun fieldsRow(): Row9<Long?, String?, String?, Int?, String?, LocalDateTime?, String?, LocalDateTime?, String?> = super.fieldsRow() as Row9<Long?, String?, String?, Int?, String?, LocalDateTime?, String?, LocalDateTime?, String?>
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    fun <U> mapping(from: (Long?, String?, String?, Int?, String?, LocalDateTime?, String?, LocalDateTime?) -> U): SelectField<U> = convertFrom(Records.mapping(from))
+    fun <U> mapping(from: (Long?, String?, String?, Int?, String?, LocalDateTime?, String?, LocalDateTime?, String?) -> U): SelectField<U> = convertFrom(Records.mapping(from))
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    fun <U> mapping(toType: Class<U>, from: (Long?, String?, String?, Int?, String?, LocalDateTime?, String?, LocalDateTime?) -> U): SelectField<U> = convertFrom(toType, Records.mapping(from))
+    fun <U> mapping(toType: Class<U>, from: (Long?, String?, String?, Int?, String?, LocalDateTime?, String?, LocalDateTime?, String?) -> U): SelectField<U> = convertFrom(toType, Records.mapping(from))
 }

@@ -13,16 +13,36 @@ class AuthorJooqRepository(dslContext: DSLContext,authorDao: BlogAuthorDao) :
     /**
      * Save using  the JOOQ generate POJOs and DAOs
      */
-    fun save(blogAuthor: BlogAuthor):Long{
+    fun save(author: AuthorJooqEntity):Long{
+        val blogAuthor = author.toJooqBlogAuthor()
         dao.insert(blogAuthor)
         return blogAuthor.id!!
 
     }
 
-    fun findById(authorId:Long)=
-        dao.fetchOneById(authorId)
+    private fun AuthorJooqEntity.toJooqBlogAuthor() =
+        BlogAuthor(
+            id = this.id,
+            firstName = this.firstName,
+            lastName = this.lastName,
+            email = this.email
+        )
 
-    fun searchBy(fname:String) =
-             dao.fetchByFirstName(fname)
+
+    fun findById(authorId: Long) =
+        dao.fetchOneById(authorId)?.toJooqEntity()
+
+    fun searchBy(fname: String) =
+        dao.fetchByFirstName(fname)
+            .map { it.toJooqEntity() }
+
+
+    private fun BlogAuthor.toJooqEntity() =
+        AuthorJooqEntity(
+            id = this.id!!,
+            firstName = this.firstName!!,
+            lastName = this.lastName!!,
+            email = this.email!!
+        )
 
 }

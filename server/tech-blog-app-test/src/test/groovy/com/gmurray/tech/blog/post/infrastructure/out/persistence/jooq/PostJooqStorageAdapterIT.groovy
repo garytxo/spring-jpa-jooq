@@ -99,7 +99,7 @@ class PostJooqStorageAdapterIT extends Specification {
         testData.blogAuthor.firstName = fname
         testData.blogAuthor.lastName = lname
 
-        blogPostTestDataCreator.createBlogPostWith(testData)
+        blogPostTestDataCreator.createBlogAuthorWith(testData)
 
         return testData
     }

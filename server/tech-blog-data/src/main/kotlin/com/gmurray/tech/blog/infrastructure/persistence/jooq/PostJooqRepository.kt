@@ -8,6 +8,7 @@ import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogPo
 import com.gmurray.tech.blog.infrastructure.persistence.exception.PostNotFoundException
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
+import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.PostCategory as PostCategoryPojo
 
 @Repository
 class PostJooqRepository(
@@ -21,12 +22,44 @@ class PostJooqRepository(
     /**
      * Save using  the JOOQ generate POJOs and DAOs
      */
-    fun save(newBlogPost: NewBlogPost): Long {
-        dao.insert(newBlogPost.blogPost)
-        savePostCategories(newBlogPost)
-        return newBlogPost.blogPost.id!!
+    fun save(blogPost: PostJooqEntity): Long {
+        val newPost = blogPost.newPost()
+        newPost.savePostCategories()
+        return newPost.id!!
+    }
+
+    private fun PostJooqEntity.newPost(): PostJooqEntity {
+        val jooqPojo = this.toBlogPostPojo()
+        dao.insert(jooqPojo)
+        return jooqPojo.toJooqEntity()
+    }
+
+    private fun PostJooqEntity.savePostCategories() {
+        val categories = categoryDao.fetch(PostCategory.POST_CATEGORY.NAME, this.categories)
+        categories.forEach { postCategory ->
+            postCategory.mergePostCategories(postId = this.id!!)
+        }
 
     }
+
+    private fun PostCategoryPojo.mergePostCategories(postId: Long) {
+        dslContext().insertInto(PostPostCategory.POST_POST_CATEGORY)
+            .columns(PostPostCategory.POST_POST_CATEGORY.POST_ID, PostPostCategory.POST_POST_CATEGORY.CATEGORY_ID)
+            .values(postId, this.id!!)
+            .onDuplicateKeyIgnore()
+            .execute()
+    }
+
+
+    private fun PostJooqEntity.toBlogPostPojo() =
+        BlogPost(
+            id = this.id,
+            title = this.title,
+            description = this.description,
+            authorId = this.authorId,
+            tags = this.tags.joinToString("  ") { it.lowercase().trim() },
+            status = this.status
+        )
 
     fun findPostBy(postId: Long): PostJooqEntity {
         val post = dao.fetchOneById(postId) ?: throw PostNotFoundException("No post found for id:$postId")
@@ -41,39 +74,16 @@ class PostJooqRepository(
             tags = emptySet(),
             status = this.status!!,
             authorId = this.authorId!!,
-            categories = findCategoryNamesFor(this.id!!)
+            categories = this.postCategories()
         )
 
-    private fun findCategoryNamesFor(postId: Long) =
+    private fun BlogPost.postCategories() =
         dslContext().select(PostCategory.POST_CATEGORY.NAME)
             .from(PostCategory.POST_CATEGORY)
             .join(PostPostCategory.POST_POST_CATEGORY)
             .on(PostPostCategory.POST_POST_CATEGORY.CATEGORY_ID.eq(PostCategory.POST_CATEGORY.ID))
-            .where(PostPostCategory.POST_POST_CATEGORY.POST_ID.eq(postId))
+            .where(PostPostCategory.POST_POST_CATEGORY.POST_ID.eq(this.id!!))
             .fetch(PostCategory.POST_CATEGORY.NAME)
             .mapNotNull { it }.toSet()
-
-
-    private fun savePostCategories(newBlogPost: NewBlogPost) {
-        val categories = categoryDao.fetch(PostCategory.POST_CATEGORY.NAME, newBlogPost.categoriesNames)
-        categories.forEach { postCategory ->
-            mergePostCategories(postId = newBlogPost.blogPost.id!!, postCategoryId = postCategory.id!!)
-        }
-
-    }
-
-    private fun mergePostCategories(postId: Long, postCategoryId: Long) {
-        dslContext().insertInto(PostPostCategory.POST_POST_CATEGORY)
-            .columns(PostPostCategory.POST_POST_CATEGORY.POST_ID, PostPostCategory.POST_POST_CATEGORY.CATEGORY_ID)
-            .values(postId, postCategoryId)
-            .onDuplicateKeyIgnore()
-            .execute()
-    }
-
-    data class NewBlogPost(
-        val blogPost: BlogPost,
-        val categoriesNames: Set<String>
-    )
-
-
+    
 }

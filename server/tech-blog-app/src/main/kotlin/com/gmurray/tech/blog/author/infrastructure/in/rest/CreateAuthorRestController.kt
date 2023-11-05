@@ -63,7 +63,8 @@ class CreateAuthorRestController(
     private fun CreateAuthorRequest.toNewAuthor() =
         CreateAuthorUseCase.NewAuthorCommand(
             firstName = this.firstName,
-            lastName = this.lastName
+            lastName = this.lastName,
+            email = this.email
         )
 
 

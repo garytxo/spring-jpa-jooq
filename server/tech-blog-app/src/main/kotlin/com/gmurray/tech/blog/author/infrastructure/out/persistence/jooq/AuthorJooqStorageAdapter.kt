@@ -5,9 +5,9 @@ import com.gmurray.tech.blog.author.application.port.`in`.FindAuthorsUseCase
 import com.gmurray.tech.blog.author.application.port.out.CreateAuthorPort
 import com.gmurray.tech.blog.author.application.port.out.FindAuthorsPort
 import com.gmurray.tech.blog.author.domain.BlogAuthor
+import com.gmurray.tech.blog.infrastructure.persistence.jooq.AuthorJooqEntity
 import com.gmurray.tech.blog.infrastructure.persistence.jooq.AuthorJooqRepository
 import org.slf4j.LoggerFactory
-import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogAuthor as BlogAuthorPojo
 
 
 open class AuthorJooqStorageAdapter(private val authorJooqRepository: AuthorJooqRepository):
@@ -17,7 +17,7 @@ open class AuthorJooqStorageAdapter(private val authorJooqRepository: AuthorJooq
 
     override fun create(newAuthorCommand: CreateAuthorUseCase.NewAuthorCommand): Long {
         logger.info("Saving author $newAuthorCommand")
-        return authorJooqRepository.save(newAuthorCommand.toJooqPojo())
+        return authorJooqRepository.save(newAuthorCommand.toAuthorJooqEntity())
     }
 
     override fun findBy(searchAuthorQuery: FindAuthorsUseCase.SearchAuthorQuery): Set<BlogAuthor> {
@@ -27,16 +27,17 @@ open class AuthorJooqStorageAdapter(private val authorJooqRepository: AuthorJooq
 
     }
 
-    private fun BlogAuthorPojo.toDomain() =
+    private fun AuthorJooqEntity.toDomain() =
         BlogAuthor.toAuthor(
             id = this.id!!,
-            firstName = this.firstName!!,
-            lastName = this.lastName!!
-        )
-
-    private fun CreateAuthorUseCase.NewAuthorCommand.toJooqPojo() =
-        com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogAuthor(
             firstName = this.firstName,
             lastName = this.lastName
+        )
+
+    private fun CreateAuthorUseCase.NewAuthorCommand.toAuthorJooqEntity() =
+        AuthorJooqEntity(
+            firstName = this.firstName,
+            lastName = this.lastName,
+            email = this.email
         )
 }

@@ -10,7 +10,7 @@ import com.gmurray.tech.blog.infrastructure.persistence.shared.BlogPostStatus
 import com.gmurray.tech.blog.post.application.exception.PostAuthorDoesNotExistException
 import com.gmurray.tech.blog.post.application.port.`in`.CreateBlogPostUseCase
 import com.gmurray.tech.blog.post.application.port.out.CreateBlogPostPort
-import com.gmurray.tech.blog.post.application.port.out.GetBlogPostByIdPort
+import com.gmurray.tech.blog.post.application.port.out.FindBlogPostByIdPort
 import com.gmurray.tech.blog.post.domain.Post
 import com.gmurray.tech.blog.post.domain.PostCategory
 import com.gmurray.tech.blog.post.domain.PostDescription
@@ -22,7 +22,7 @@ class PostJpaStorageAdapter(
     private val authorJpaRepository: AuthorJpaRepository,
     private val postJpaRepository: PostJpaRepository,
     private val categoryJpaRepository: CategoryJpaRepository
-) : CreateBlogPostPort, GetBlogPostByIdPort {
+) : CreateBlogPostPort, FindBlogPostByIdPort {
 
 
     override fun create(newBlogPostCommand: CreateBlogPostUseCase.NewBlogPostCommand): Long {

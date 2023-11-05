@@ -3,9 +3,7 @@ package com.gmurray.tech.blog.post.infrastructure.in.rest
 import com.gmurray.tech.blog.RestIntegrationTest
 import com.gmurray.tech.blog.fixtures.persistence.BlogPostTestData
 import com.gmurray.tech.blog.fixtures.persistence.BlogPostTestDataCreator
-import com.gmurray.tech.blog.infrastructure.persistence.jpa.AuthorJpaEntity
-import com.gmurray.tech.blog.infrastructure.persistence.jpa.AuthorJpaRepository
-import com.gmurray.tech.blog.post.domain.Categories
+import com.gmurray.tech.blog.fixtures.persistence.TestPostCategory
 import com.gmurray.tech.blog.post.infrastructure.in.rest.dto.CreateBlogPostRequest
 import com.gmurray.tech.blog.post.infrastructure.in.rest.dto.CreateBlogPostResponse
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,7 +29,7 @@ class CreateBlogPostRestControllerIT extends RestIntegrationTest {
         def title = "post title"
         def description = "post description"
         def tags = ["Tag","Tag2"].toSet()
-        def categories = [Categories.ENTERTAINMENT.name()].toSet()
+        def categories = [TestPostCategory.ENTERTAINMENT.name()].toSet()
 
         and:
         def request = new CreateBlogPostRequest(authorId,title,description,tags,categories)

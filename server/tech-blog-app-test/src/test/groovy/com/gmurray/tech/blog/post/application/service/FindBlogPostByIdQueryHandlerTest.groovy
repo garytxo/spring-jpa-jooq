@@ -1,7 +1,7 @@
 package com.gmurray.tech.blog.post.application.service
 
 import com.gmurray.tech.blog.author.domain.AuthorId
-import com.gmurray.tech.blog.post.application.port.out.GetBlogPostByIdPort
+import com.gmurray.tech.blog.post.application.port.out.FindBlogPostByIdPort
 import com.gmurray.tech.blog.post.domain.Post
 import com.gmurray.tech.blog.post.domain.PostCategory
 import com.gmurray.tech.blog.post.domain.PostDescription
@@ -10,10 +10,10 @@ import com.gmurray.tech.blog.post.domain.PostTag
 import com.gmurray.tech.blog.post.domain.PostTitle
 import spock.lang.Specification
 
-class GetBlogPostByIdQueryHandlerTest extends Specification {
+class FindBlogPostByIdQueryHandlerTest extends Specification {
 
-    GetBlogPostByIdPort getBlogPostByIdPort = Mock()
-    def getBlogPostByIdQueryHandler = new GetBlogPostByIdQueryHandler(getBlogPostByIdPort)
+    FindBlogPostByIdPort getBlogPostByIdPort = Mock()
+    def getBlogPostByIdQueryHandler = new FindBlogPostByIdQueryHandler(getBlogPostByIdPort)
 
     def "getBlogPostById should should return Post when given a valid id "() {
         given:

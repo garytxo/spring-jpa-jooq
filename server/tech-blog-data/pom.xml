@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.gmurray</groupId>
+        <artifactId>tech-blog</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>tech-blog-data</artifactId>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-jdbc</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gmurray</groupId>
+            <artifactId>tech-blog-shared</artifactId>
+            <version>${tech.data.shared.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gmurray</groupId>
+            <artifactId>tech-blog-data-jooq</artifactId>
+            <version>${tech.data.jooq.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+    </build>
+
+    <profiles>
+    <profile>
+        <id>jooq_codegen</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.flywaydb</groupId>
+                    <artifactId>flyway-maven-plugin</artifactId>
+                    <version>${jooq.codegen.flyway-maven-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.postgresql</groupId>
+                            <artifactId>postgresql</artifactId>
+                            <version>${jooq.codegen.postgresql.client.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <driver>org.postgresql.Driver</driver>
+                        <url>jdbc:postgresql://database:5432/${jooq.codegen.database.name}</url>
+                        <user>postgres</user>
+                        <password>psql</password>
+                        <schemas>
+                            <schema>tech_blog</schema>
+                        </schemas>
+                        <defaultSchema>tech_blog</defaultSchema>
+                        <locations>
+                            <location>filesystem:${project.basedir}/src/main/resources/db/blog-migration</location>
+                        </locations>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>migrate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+    </profiles>
+
+</project>

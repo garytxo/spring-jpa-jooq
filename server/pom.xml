@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- Need to import this boot dependecies -->
+
+    <!--
+
+        https://duckduckgo.com/?q=jooq+jpa+database+&ia=web
+        https://stackoverflow.com/questions/62055237/technical-difference-between-spring-boot-with-jooq-and-spring-data-jpa
+        https://www.baeldung.com/jooq-with-spring
+        -->
+    <groupId>com.gmurray</groupId>
+    <artifactId>tech-blog</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <description>Demo project illustrating spring and jooq features with JPA</description>
+    <modules>
+        <module>tech-blog-shared</module>
+        <module>tech-blog-data</module>
+        <module>tech-blog-data-jooq</module>
+        <module>tech-blog-app</module>
+        <module>tech-blog-app-test</module>
+
+    </modules>
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kotlin.version>1.8.22</kotlin.version>
+        <spring.boot.version>3.1.3</spring.boot.version>
+        <tech.blog.data.version>0.0.1-SNAPSHOT</tech.blog.data.version>
+        <spring-boot-maven-plugin.version>2.4.3</spring-boot-maven-plugin.version>
+        <io.swagger.annotations.version>2.2.10</io.swagger.annotations.version>
+        <openapi.version>2.1.0</openapi.version>
+        <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
+        <gmavenplus-plugin.version>2.1.0</gmavenplus-plugin.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <surefire.classes.included>%regex[.*((Test)|(IT))\..*]</surefire.classes.included>
+
+        <test-coverage.additional-exclusions>
+            **/*Application*.*,
+            **/*Config.*,
+            **/Abstract*.*,
+            **/annotations/*,
+            **/config/**/*.class,
+            **/common/*
+        </test-coverage.additional-exclusions>
+
+        <jooq.version>3.18.6</jooq.version>
+
+        <tech.data.jpa.version>0.0.1-SNAPSHOT</tech.data.jpa.version>
+        <tech.data.jooq.version>0.0.1-SNAPSHOT</tech.data.jooq.version>
+        <tech.data.shared.version>0.0.1-SNAPSHOT</tech.data.shared.version>
+
+        <jooq.codegen.database.name>demo_tech_blog</jooq.codegen.database.name>
+        <jooq.codegen.metadata.codegen.package>com.gmurray.tech.blog.infrastructure.jooq.persistence</jooq.codegen.metadata.codegen.package>
+        <jooq.codegen.postgresql.docker.version>12</jooq.codegen.postgresql.docker.version>
+        <jooq.codegen.postgresql.client.version>42.3.7</jooq.codegen.postgresql.client.version>
+        <jooq.codegen.docker-maven-plugin.version>0.40.2</jooq.codegen.docker-maven-plugin.version>
+        <jooq.codegen.flyway-maven-plugin.version>9.17.0</jooq.codegen.flyway-maven-plugin.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.gmurray</groupId>
+                <artifactId>tech-blog-data</artifactId>
+                <version>${tech.blog.data.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${io.swagger.annotations.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${openapi.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq</artifactId>
+                <version>${jooq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen</artifactId>
+                <version>${jooq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-meta</artifactId>
+                <version>${jooq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-meta-extensions</artifactId>
+                <version>${jooq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-kotlin</artifactId>
+                <version>${jooq.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <!-- Only add dependencies that should be added to each submodules -->
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-common</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>17</source>
+                        <target>17</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-maven-plugin</artifactId>
+                    <version>${kotlin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>compile</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>test-compile</id>
+                            <phase>process-sources</phase>
+                            <goals>
+                                <goal>test-compile</goal>
+                            </goals>
+                            <configuration>
+                                <sourceDirs>
+                                    <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+                                </sourceDirs>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <jvmTarget>${java.version}</jvmTarget>
+                        <javaParameters>true</javaParameters>
+                        <args>
+                            <arg>-Xjsr305=strict</arg>
+                        </args>
+                        <compilerPlugins>
+                            <plugin>spring</plugin>
+                            <plugin>jpa</plugin>
+                            <plugin>no-arg</plugin>
+                        </compilerPlugins>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-allopen</artifactId>
+                            <version>${kotlin.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-noarg</artifactId>
+                            <version>${kotlin.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <useFile>false</useFile>
+                        <includes>
+                            <include>${surefire.classes.included}</include>
+                        </includes>
+                    </configuration>
+                </plugin>
+                <!-- Spock testing compilation-->
+                <plugin>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <version>${gmavenplus-plugin.version}</version>
+                    <configuration>
+                        <testSources>
+                            <testSource>
+                                <directory>${project.basedir}/src/test/groovy</directory>
+                                <includes>
+                                    <include>**/*.groovy</include>
+                                </includes>
+                            </testSource>
+                        </testSources>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>compile</goal>
+                                <goal>compileTests</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!--
+                jacoco report use in sonarqube
+
+                -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
+                    <!-- Define a list of classes or packages that should be excluded in the report and coverage -->
+                    <configuration>
+                        <excludes>
+                            <exclude>${test-coverage.additional-exclusions}</exclude>
+                        </excludes>
+                    </configuration>
+
+                    <executions>
+                        <!-- Prepare the JaCoCo runtime agent to store the all tests (Unit and IT tests) coverage
+                         data which is stored in the default file `target/jacoco.exec` -->
+                        <execution>
+                            <id>pre-unit-test-execution</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <append>true</append>
+                                <destFile>${project.build.directory}/jacoco.xml</destFile>
+                            </configuration>
+                        </execution>
+                        <!-- Next the JaCoCo agent writes the  test report coverage data files to default
+                             folder `target/site/jacoco` -->
+                        <execution>
+                            <id>post-unit-test-execution</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <dataFile>${project.build.directory}/jacoco.xml</dataFile>
+                            </configuration>
+                        </execution>
+                        <!-- Check to ensure every class has 85% line coverage except test classes -->
+                        <execution>
+                            <id>jacoco-check</id>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <configuration>
+                                <dataFile>${project.build.directory}/jacoco.xml</dataFile>
+                                <rules>
+                                    <rule>
+                                        <element>BUNDLE</element>
+                                        <limits>
+                                            <limit>
+                                                <counter>LINE</counter>
+                                                <value>COVEREDRATIO</value>
+                                                <minimum>85%</minimum>
+                                            </limit>
+                                        </limits>
+                                    </rule>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+
+        </pluginManagement>
+
+
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+    </build>
+
+</project>

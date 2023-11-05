@@ -1,0 +1,49 @@
+tech-blog:
+  application:
+    name: "api-tech-blog"
+    port: 7000
+  database:
+    url: jdbc:postgresql://localhost:5436/demo_tech_blog
+    user:
+      name: admin
+      pwd: admin1234!
+
+server:
+  port: ${tech-blog.application.port}
+  servlet:
+    contextPath: "/api-tech-blog"
+
+
+spring:
+  application:
+    name: ${tech-blog.application.name}
+  mvc:
+    log-resolved-exception: true
+
+  datasource-tech-blog:
+    hikari:
+      jdbc-url: ${tech-blog.database.url}
+      username: ${tech-blog.database.user.name}
+      password: ${tech-blog.database.user.pwd}
+      driverClassName: org.postgresql.Driver
+      pool-name: Demo tech blog pool
+      maximum-pool-size: 100
+      minimum-idle: 20
+
+  main:
+    allow-bean-definition-overriding: true
+
+  flyway:
+    locations: classpath:db/blog-migration
+    outOfOrder: true
+    schemas: tech_blog
+    default-schema: tech_blog
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,info,health
+
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration

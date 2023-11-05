@@ -1,0 +1,55 @@
+package com.gmurray.tech.blog.post.infrastructure.in.rest
+
+import com.gmurray.tech.blog.RestIntegrationTest
+import com.gmurray.tech.blog.infrastructure.persistence.jpa.AuthorJpaEntity
+import com.gmurray.tech.blog.infrastructure.persistence.jpa.AuthorJpaRepository
+import com.gmurray.tech.blog.post.domain.Categories
+import com.gmurray.tech.blog.post.infrastructure.in.rest.dto.CreateBlogPostRequest
+import com.gmurray.tech.blog.post.infrastructure.in.rest.dto.CreateBlogPostResponse
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE
+
+class CreateBlogPostRestControllerIT extends RestIntegrationTest {
+
+    @Autowired
+    AuthorJpaRepository authorJpaRepository
+
+    def "POST v1/blog/posts should create a new post for exist author"(){
+
+        given:
+        def author = createAuthor("Joe","Test")
+        def title = "post title"
+        def description = "post description"
+        def tags = ["Tag","Tag2"].toSet()
+        def categories = [Categories.ENTERTAINMENT.name()].toSet()
+
+        and:
+        def request = new CreateBlogPostRequest(author.id,title,description,tags,categories)
+
+        when:
+        def response = given()
+                .contentType(APPLICATION_JSON_VALUE)
+                .body(objectMapper.writeValueAsString(request))
+                .when()
+                .post("v1/blog/posts")
+                .then()
+                .status(HttpStatus.CREATED)
+                .extract().asString()
+
+        then:
+        def result = objectMapper.readValue(response, CreateBlogPostResponse.class)
+
+        result.id > 0L
+
+    }
+
+
+
+    def createAuthor(String fname="fname", String lname="lname"){
+        def author = new AuthorJpaEntity(null,fname,lname)
+        return authorJpaRepository.save(author)
+    }
+}

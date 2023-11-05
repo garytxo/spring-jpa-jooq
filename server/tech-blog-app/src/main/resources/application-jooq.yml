@@ -1,0 +1,4 @@
+tech-blog:
+  application:
+    name: "api-tech-blog-jooq"
+    port: 7002

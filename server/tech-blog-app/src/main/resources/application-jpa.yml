@@ -1,0 +1,4 @@
+tech-blog:
+  application:
+    name: "api-tech-blog-jpa"
+    port: 7001

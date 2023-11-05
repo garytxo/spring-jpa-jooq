@@ -1,0 +1,10 @@
+tech-blog:
+  database:
+    url: jdbc:postgresql://localhost:5436/demo_tech_blog_test
+
+#logging:
+#  level:
+#    org:
+#      jooq:
+#        tools:
+#          LoggerListener: debug

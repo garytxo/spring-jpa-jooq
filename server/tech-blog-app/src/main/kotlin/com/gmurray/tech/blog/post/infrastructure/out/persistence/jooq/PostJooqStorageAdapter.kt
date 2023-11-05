@@ -1,7 +1,6 @@
 package com.gmurray.tech.blog.post.infrastructure.out.persistence.jooq
 
 import com.gmurray.tech.blog.author.domain.AuthorId
-import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogPost
 import com.gmurray.tech.blog.infrastructure.persistence.jooq.AuthorJooqRepository
 import com.gmurray.tech.blog.infrastructure.persistence.jooq.PostJooqEntity
 import com.gmurray.tech.blog.infrastructure.persistence.jooq.PostJooqRepository
@@ -29,28 +28,26 @@ class PostJooqStorageAdapter(
 
     private fun PostJooqEntity.toDomain() =
         Post(
-            id = PostId(this.id),
+            id = PostId(this.id!!),
             title = PostTitle(this.title),
             description = PostDescription(this.description),
             tags = this.tags.map { PostTag(it) }.toSet(),
             categories = this.categories.map { PostCategory(it) }.toSet(),
             author = AuthorId(this.authorId)
         )
-    
+
     override fun create(newBlogPostCommand: CreateBlogPostUseCase.NewBlogPostCommand) =
-        postJooqRepository.save(newBlogPostCommand.toNewBlogPostPojo())
+        postJooqRepository.save(newBlogPostCommand.toPostJooqEntity())
 
-    private fun CreateBlogPostUseCase.NewBlogPostCommand.toNewBlogPostPojo() =
-        PostJooqRepository.NewBlogPost(
-            blogPost = BlogPost(
-                authorId = this.getAuthor().id,
-                title = this.title,
-                description = this.description,
-                tags = this.tags.map { it.lowercase().trim() }.joinToString("  "),
-                status = BlogPostStatus.DRAFT
-            ),
-            categoriesNames = toCategories()
-
+    private fun CreateBlogPostUseCase.NewBlogPostCommand.toPostJooqEntity() =
+        PostJooqEntity(
+            id = null,
+            title = this.title,
+            description = this.description,
+            tags = this.tags,
+            status = BlogPostStatus.DRAFT,
+            categories = this.toCategories(),
+            authorId = this.getAuthor().id!!,
         )
 
     private fun CreateBlogPostUseCase.NewBlogPostCommand.toCategories() =

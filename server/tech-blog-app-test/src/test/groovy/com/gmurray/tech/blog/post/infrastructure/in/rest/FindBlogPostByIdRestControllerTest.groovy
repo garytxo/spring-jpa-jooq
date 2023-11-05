@@ -39,6 +39,10 @@ class FindBlogPostByIdRestControllerTest extends RestIntegrationTest {
 
         result.id == blogPost.blogPost.id
         result.title == blogPost.blogPost.title
+        result.description == blogPost.blogPost.description
+        blogPost.blogPost.categories.forEach {
+            assert result.categories.contains(it.name())
+        }
     }
 
 }

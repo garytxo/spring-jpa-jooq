@@ -8,7 +8,6 @@ import com.gmurray.tech.blog.author.domain.BlogAuthor
 import com.gmurray.tech.blog.infrastructure.persistence.jooq.AuthorJooqEntity
 import com.gmurray.tech.blog.infrastructure.persistence.jooq.AuthorJooqRepository
 import org.slf4j.LoggerFactory
-import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogAuthor as BlogAuthorPojo
 
 
 open class AuthorJooqStorageAdapter(private val authorJooqRepository: AuthorJooqRepository):
@@ -28,11 +27,11 @@ open class AuthorJooqStorageAdapter(private val authorJooqRepository: AuthorJooq
 
     }
 
-    private fun BlogAuthorPojo.toDomain() =
+    private fun AuthorJooqEntity.toDomain() =
         BlogAuthor.toAuthor(
             id = this.id!!,
-            firstName = this.firstName!!,
-            lastName = this.lastName!!
+            firstName = this.firstName,
+            lastName = this.lastName
         )
 
     private fun CreateAuthorUseCase.NewAuthorCommand.toAuthorJooqEntity() =

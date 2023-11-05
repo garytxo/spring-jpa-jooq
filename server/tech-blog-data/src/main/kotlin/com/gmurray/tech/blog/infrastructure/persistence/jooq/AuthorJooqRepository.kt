@@ -19,6 +19,7 @@ class AuthorJooqRepository(dslContext: DSLContext,authorDao: BlogAuthorDao) :
         return blogAuthor.id!!
 
     }
+
     private fun AuthorJooqEntity.toJooqBlogAuthor() =
         BlogAuthor(
             id = this.id,
@@ -28,10 +29,20 @@ class AuthorJooqRepository(dslContext: DSLContext,authorDao: BlogAuthorDao) :
         )
 
 
-    fun findById(authorId:Long)=
-        dao.fetchOneById(authorId)
+    fun findById(authorId: Long) =
+        dao.fetchOneById(authorId)?.toJooqEntity()
 
-    fun searchBy(fname:String) =
-             dao.fetchByFirstName(fname)
+    fun searchBy(fname: String) =
+        dao.fetchByFirstName(fname)
+            .map { it.toJooqEntity() }
+
+
+    private fun BlogAuthor.toJooqEntity() =
+        AuthorJooqEntity(
+            id = this.id!!,
+            firstName = this.firstName!!,
+            lastName = this.lastName!!,
+            email = this.email!!
+        )
 
 }

@@ -3,8 +3,6 @@ package com.gmurray.tech.blog.post.infrastructure.out.persistence.jpa
 import com.gmurray.tech.blog.fixtures.persistence.BlogPostTestData
 import com.gmurray.tech.blog.fixtures.persistence.BlogPostTestDataCreator
 import com.gmurray.tech.blog.fixtures.slices.JpaDbTest
-import com.gmurray.tech.blog.infrastructure.persistence.jpa.AuthorJpaEntity
-import com.gmurray.tech.blog.infrastructure.persistence.jpa.AuthorJpaRepository
 import com.gmurray.tech.blog.post.application.exception.PostAuthorDoesNotExistException
 import com.gmurray.tech.blog.post.application.port.in.CreateBlogPostUseCase
 import com.gmurray.tech.blog.post.domain.Categories

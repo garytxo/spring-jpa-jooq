@@ -36,7 +36,7 @@ class PostJooqStorageAdapter(
             categories = this.categories.map { PostCategory(it) }.toSet(),
             author = AuthorId(this.authorId)
         )
-
+    
     override fun create(newBlogPostCommand: CreateBlogPostUseCase.NewBlogPostCommand) =
         postJooqRepository.save(newBlogPostCommand.toNewBlogPostPojo())
 
@@ -60,4 +60,6 @@ class PostJooqStorageAdapter(
     private fun CreateBlogPostUseCase.NewBlogPostCommand.getAuthor() =
         authorJooqRepository.findById(this.authorId)
             ?: throw PostAuthorDoesNotExistException("No author exist with id:${this.authorId}")
+
+
 }

@@ -260,4 +260,4 @@ https://www.jooq.org/doc/latest/manual/sql-execution/alternative-execution-model
 
 https://www.jooq.org/doc/latest/manual/sql-execution/alternative-execution-models/using-jooq-with-jpa/using-jooq-with-jpa-entityresult/
 
-
+https://blog.gitguardian.com/8-easy-steps-to-set-up-multiple-git-accounts/

@@ -36,7 +36,7 @@ In order to install and start the application please ensure that you have the fo
 - Java JDK (v17+)
 - Maven (v3+)
 - Kotlin (1.8.20) (via Maven plugin)
-- Docker 
+- Docker (Postgres) 
 
 ### Frameworks used 
 - Spring Boot 3+

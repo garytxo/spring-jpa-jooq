@@ -30,6 +30,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-          
+
       - name: Build and Test
+        working-directory: server
         run: mvn -ntp -B -U -Dlogging.level.root=WARN verify

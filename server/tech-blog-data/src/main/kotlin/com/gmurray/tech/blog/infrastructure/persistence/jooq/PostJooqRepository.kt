@@ -1,7 +1,8 @@
 package com.gmurray.tech.blog.infrastructure.persistence.jooq
 
-import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.PostCategory
+import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.PostCategory.Companion.POST_CATEGORY
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.PostPostCategory
+import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.PostPostCategory.Companion.POST_POST_CATEGORY
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.daos.BlogPostDao
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.daos.PostCategoryDao
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogPost
@@ -35,7 +36,7 @@ class PostJooqRepository(
     }
 
     private fun PostJooqEntity.savePostCategories() {
-        val categories = categoryDao.fetch(PostCategory.POST_CATEGORY.NAME, this.categories)
+        val categories = categoryDao.fetch(POST_CATEGORY.NAME, this.categories.map { it.name })
         categories.forEach { postCategory ->
             postCategory.mergePostCategories(postId = this.id!!)
         }
@@ -78,12 +79,15 @@ class PostJooqRepository(
         )
 
     private fun BlogPost.postCategories() =
-        dslContext().select(PostCategory.POST_CATEGORY.NAME)
-            .from(PostCategory.POST_CATEGORY)
-            .join(PostPostCategory.POST_POST_CATEGORY)
-            .on(PostPostCategory.POST_POST_CATEGORY.CATEGORY_ID.eq(PostCategory.POST_CATEGORY.ID))
-            .where(PostPostCategory.POST_POST_CATEGORY.POST_ID.eq(this.id!!))
-            .fetch(PostCategory.POST_CATEGORY.NAME)
-            .mapNotNull { it }.toSet()
+        dslContext().select(
+            POST_CATEGORY.ID,
+            POST_CATEGORY.NAME
+        )
+            .from(POST_CATEGORY)
+            .join(POST_POST_CATEGORY)
+            .on(POST_POST_CATEGORY.CATEGORY_ID.eq(POST_CATEGORY.ID))
+            .where(POST_POST_CATEGORY.POST_ID.eq(this.id!!))
+            .fetchInto(PostCategoryEntity::class.java)
+            .toMutableSet()
     
 }

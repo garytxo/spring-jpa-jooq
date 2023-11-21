@@ -2,6 +2,7 @@ package com.gmurray.tech.blog.post.infrastructure.out.persistence.jooq
 
 import com.gmurray.tech.blog.author.domain.AuthorId
 import com.gmurray.tech.blog.infrastructure.persistence.jooq.AuthorJooqRepository
+import com.gmurray.tech.blog.infrastructure.persistence.jooq.PostCategoryEntity
 import com.gmurray.tech.blog.infrastructure.persistence.jooq.PostJooqEntity
 import com.gmurray.tech.blog.infrastructure.persistence.jooq.PostJooqRepository
 import com.gmurray.tech.blog.infrastructure.persistence.shared.BlogPostStatus
@@ -32,7 +33,7 @@ class PostJooqStorageAdapter(
             title = PostTitle(this.title),
             description = PostDescription(this.description),
             tags = this.tags.map { PostTag(it) }.toSet(),
-            categories = this.categories.map { PostCategory(it) }.toSet(),
+            categories = this.categories.map { PostCategory(it.name) }.toSet(),
             author = AuthorId(this.authorId)
         )
 
@@ -46,12 +47,12 @@ class PostJooqStorageAdapter(
             description = this.description,
             tags = this.tags,
             status = BlogPostStatus.DRAFT,
-            categories = this.toCategories(),
+            categories = this.toPostCategories(),
             authorId = this.getAuthor().id!!,
         )
 
-    private fun CreateBlogPostUseCase.NewBlogPostCommand.toCategories() =
-        this.categories.map { it.name }.toSet()
+    private fun CreateBlogPostUseCase.NewBlogPostCommand.toPostCategories() =
+        this.categories.map { PostCategoryEntity(null, it.name) }.toSet()
 
 
     private fun CreateBlogPostUseCase.NewBlogPostCommand.getAuthor() =

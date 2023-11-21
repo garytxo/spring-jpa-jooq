@@ -30,13 +30,6 @@ class FindBlogPostResponse(
         title = "Blog post categories",
         example = "[SPORT]"
     )
-    val categories: Set<String>,
-
-    @field:Schema(
-        name = "tags", required = true,
-        title = "Blog post tags",
-        example = "[Tag]"
-    )
-    val tags: Set<String>,
+    val categories: Set<String>
 
     )

@@ -28,11 +28,10 @@ class CreateBlogPostRestControllerIT extends RestIntegrationTest {
         def authorId = createAuthor("Joe","Test")
         def title = "post title"
         def description = "post description"
-        def tags = ["Tag","Tag2"].toSet()
         def categories = [TestPostCategory.ENTERTAINMENT.name()].toSet()
 
         and:
-        def request = new CreateBlogPostRequest(authorId,title,description,tags,categories)
+        def request = new CreateBlogPostRequest(authorId, title, description, categories)
 
         when:
         def response = given()

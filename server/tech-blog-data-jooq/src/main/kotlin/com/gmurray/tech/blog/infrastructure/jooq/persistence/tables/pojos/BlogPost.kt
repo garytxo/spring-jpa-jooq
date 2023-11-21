@@ -19,7 +19,6 @@ data class BlogPost(
     override var authorId: Long? = null,
     override var title: String? = null,
     override var description: String? = null,
-    override var tags: String? = null,
     override var status: BlogPostStatus? = null,
     override var rowVersion: Int? = null,
     override var rowCreatedBy: String? = null,
@@ -60,12 +59,6 @@ data class BlogPost(
                 return false
         }
         else if (this.description != o.description)
-            return false
-        if (this.tags == null) {
-            if (o.tags != null)
-                return false
-        }
-        else if (this.tags != o.tags)
             return false
         if (this.status == null) {
             if (o.status != null)
@@ -113,7 +106,6 @@ data class BlogPost(
         result = prime * result + (if (this.authorId == null) 0 else this.authorId.hashCode())
         result = prime * result + (if (this.title == null) 0 else this.title.hashCode())
         result = prime * result + (if (this.description == null) 0 else this.description.hashCode())
-        result = prime * result + (if (this.tags == null) 0 else this.tags.hashCode())
         result = prime * result + (if (this.status == null) 0 else this.status.hashCode())
         result = prime * result + (if (this.rowVersion == null) 0 else this.rowVersion.hashCode())
         result = prime * result + (if (this.rowCreatedBy == null) 0 else this.rowCreatedBy.hashCode())
@@ -130,7 +122,6 @@ data class BlogPost(
         sb.append(", ").append(authorId)
         sb.append(", ").append(title)
         sb.append(", ").append(description)
-        sb.append(", ").append(tags)
         sb.append(", ").append(status)
         sb.append(", ").append(rowVersion)
         sb.append(", ").append(rowCreatedBy)
@@ -151,7 +142,6 @@ data class BlogPost(
         authorId = from.authorId
         title = from.title
         description = from.description
-        tags = from.tags
         status = from.status
         rowVersion = from.rowVersion
         rowCreatedBy = from.rowCreatedBy

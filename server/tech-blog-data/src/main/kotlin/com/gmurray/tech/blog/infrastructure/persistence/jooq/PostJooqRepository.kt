@@ -1,5 +1,6 @@
 package com.gmurray.tech.blog.infrastructure.persistence.jooq
 
+import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.BlogPost.Companion.BLOG_POST
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.PostCategory.Companion.POST_CATEGORY
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.PostPostCategory
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.PostPostCategory.Companion.POST_POST_CATEGORY
@@ -58,7 +59,6 @@ class PostJooqRepository(
             title = this.title,
             description = this.description,
             authorId = this.authorId,
-            tags = this.tags.joinToString("  ") { it.lowercase().trim() },
             status = this.status
         )
 
@@ -67,12 +67,25 @@ class PostJooqRepository(
         return post.toJooqEntity()
     }
 
+    fun findPostBy2(postId: Long): PostJooqEntity? {
+        val post = dslContext().select(
+            BLOG_POST.ID,
+            BLOG_POST.TITLE,
+            BLOG_POST.DESCRIPTION,
+            BLOG_POST.STATUS,
+            BLOG_POST.AUTHOR_ID,
+
+            ).where(BLOG_POST.ID.eq(postId))
+            .fetchInto(BLOG_POST::class.java)
+        return null
+    }
+
+
     private fun BlogPost.toJooqEntity() =
         PostJooqEntity(
             id = this.id!!,
             title = this.title!!,
             description = this.description!!,
-            tags = emptySet(),
             status = this.status!!,
             authorId = this.authorId!!,
             categories = this.postCategories()

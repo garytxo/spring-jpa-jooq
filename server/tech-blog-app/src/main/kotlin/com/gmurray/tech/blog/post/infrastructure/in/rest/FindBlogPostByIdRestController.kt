@@ -58,7 +58,6 @@ class FindBlogPostByIdRestController(
             title = this.title.value,
             description = this.description.value,
             categories = this.categories.map { it.value }.toSet(),
-            tags = this.tags.map { it.value }.toSet()
         )
 
 }

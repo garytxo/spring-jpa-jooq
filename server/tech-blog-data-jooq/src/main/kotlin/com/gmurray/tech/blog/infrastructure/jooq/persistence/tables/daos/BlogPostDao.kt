@@ -81,17 +81,6 @@ open class BlogPostDao(configuration: Configuration?) : DAOImpl<BlogPostRecord, 
     fun fetchByDescription(vararg values: String): List<com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogPost> = fetch(BlogPost.BLOG_POST.DESCRIPTION, *values)
 
     /**
-     * Fetch records that have <code>tags BETWEEN lowerInclusive AND
-     * upperInclusive</code>
-     */
-    fun fetchRangeOfTags(lowerInclusive: String?, upperInclusive: String?): List<com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogPost> = fetchRange(BlogPost.BLOG_POST.TAGS, lowerInclusive, upperInclusive)
-
-    /**
-     * Fetch records that have <code>tags IN (values)</code>
-     */
-    fun fetchByTags(vararg values: String): List<com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.pojos.BlogPost> = fetch(BlogPost.BLOG_POST.TAGS, *values)
-
-    /**
      * Fetch records that have <code>status BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */

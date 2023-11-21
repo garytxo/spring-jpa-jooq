@@ -14,7 +14,6 @@ import com.gmurray.tech.blog.post.domain.Post
 import com.gmurray.tech.blog.post.domain.PostCategory
 import com.gmurray.tech.blog.post.domain.PostDescription
 import com.gmurray.tech.blog.post.domain.PostId
-import com.gmurray.tech.blog.post.domain.PostTag
 import com.gmurray.tech.blog.post.domain.PostTitle
 
 class PostJooqStorageAdapter(
@@ -32,7 +31,6 @@ class PostJooqStorageAdapter(
             id = PostId(this.id!!),
             title = PostTitle(this.title),
             description = PostDescription(this.description),
-            tags = this.tags.map { PostTag(it) }.toSet(),
             categories = this.categories.map { PostCategory(it.name) }.toSet(),
             author = AuthorId(this.authorId)
         )
@@ -45,7 +43,6 @@ class PostJooqStorageAdapter(
             id = null,
             title = this.title,
             description = this.description,
-            tags = this.tags,
             status = BlogPostStatus.DRAFT,
             categories = this.toPostCategories(),
             authorId = this.getAuthor().id!!,

@@ -33,9 +33,8 @@ class PostJpaStorageAdapterIT extends Specification {
         def authorId = 111L
         def title = "post title"
         def description = "post description"
-        def tags = ["Tag","Tag2"].toSet()
         def categories = [Categories.ENTERTAINMENT].toSet()
-        def command = new CreateBlogPostUseCase.NewBlogPostCommand(authorId,title,description,tags,categories)
+        def command = new CreateBlogPostUseCase.NewBlogPostCommand(authorId, title, description, categories)
 
         when:
         postJpaStorageAdapter.create(command)
@@ -51,9 +50,8 @@ class PostJpaStorageAdapterIT extends Specification {
         def authorId = createAuthor("Joe","Test")
         def title = "post title"
         def description = "post description"
-        def tags = ["Tag","Tag2"].toSet()
         def categories = [Categories.ENTERTAINMENT].toSet()
-        def command = new CreateBlogPostUseCase.NewBlogPostCommand(authorId, title, description, tags, categories)
+        def command = new CreateBlogPostUseCase.NewBlogPostCommand(authorId, title, description, categories)
 
         when:
         def result = postJpaStorageAdapter.create(command)

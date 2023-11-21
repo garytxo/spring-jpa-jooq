@@ -61,7 +61,6 @@ class CreateBlogPostRestController(
             authorId = this.authorId,
             title = this.title,
             description = this.description,
-            tags = this.tags,
             categories = this.categories.map { Categories.valueOf(it) }.toSet()
         )
 }

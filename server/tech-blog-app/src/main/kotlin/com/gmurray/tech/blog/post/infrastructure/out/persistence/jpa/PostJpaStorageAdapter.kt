@@ -15,7 +15,6 @@ import com.gmurray.tech.blog.post.domain.Post
 import com.gmurray.tech.blog.post.domain.PostCategory
 import com.gmurray.tech.blog.post.domain.PostDescription
 import com.gmurray.tech.blog.post.domain.PostId
-import com.gmurray.tech.blog.post.domain.PostTag
 import com.gmurray.tech.blog.post.domain.PostTitle
 
 class PostJpaStorageAdapter(
@@ -41,7 +40,6 @@ class PostJpaStorageAdapter(
             id = PostId(this.id!!),
             title = PostTitle(this.title),
             description = PostDescription(this.description),
-            tags = this.tags.split(" ").map { PostTag(it) }.toSet(),
             categories = this.categories?.map { PostCategory(it.name) }?.toSet() ?: emptySet(),
             author = AuthorId(this.author.id!!)
 
@@ -52,7 +50,6 @@ class PostJpaStorageAdapter(
             author = this.getAuthor(),
             title = this.title,
             description = this.description,
-            tags = this.tags.map { it.lowercase().trim() }.joinToString("  "),
             status = BlogPostStatus.DRAFT,
             categories = this.toJpaCategories()
         )

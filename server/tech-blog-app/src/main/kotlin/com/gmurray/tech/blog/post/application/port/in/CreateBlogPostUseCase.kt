@@ -12,7 +12,6 @@ interface CreateBlogPostUseCase {
         val authorId:Long,
         val title:String,
         val description:String,
-        val tags:Set<String>,
         val categories: Set<Categories>,
     )
 }

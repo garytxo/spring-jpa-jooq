@@ -36,10 +36,7 @@ class PostJpaEntity(
 
     @Column(name = "description")
     val description:String,
-
-    @Column(name = "tags")
-    val tags:String,
-
+    
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     val status: BlogPostStatus,

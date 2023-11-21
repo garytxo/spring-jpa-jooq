@@ -49,7 +49,7 @@ class PostJooqStorageAdapter(
         )
 
     private fun CreateBlogPostUseCase.NewBlogPostCommand.toPostCategories() =
-        this.categories.map { PostCategoryEntity(null, it.name) }.toSet()
+        this.categories.map { PostCategoryEntity(null, it.name) }.toList()
 
 
     private fun CreateBlogPostUseCase.NewBlogPostCommand.getAuthor() =

@@ -8,5 +8,5 @@ class PostJooqEntity(
     val description: String,
     val status: BlogPostStatus,
     val authorId: Long,
-    val categories: Set<PostCategoryEntity>
+    val categories: List<PostCategoryEntity>
 )

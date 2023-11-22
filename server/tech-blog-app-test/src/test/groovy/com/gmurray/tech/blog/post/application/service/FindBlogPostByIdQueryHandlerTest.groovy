@@ -6,7 +6,6 @@ import com.gmurray.tech.blog.post.domain.Post
 import com.gmurray.tech.blog.post.domain.PostCategory
 import com.gmurray.tech.blog.post.domain.PostDescription
 import com.gmurray.tech.blog.post.domain.PostId
-import com.gmurray.tech.blog.post.domain.PostTag
 import com.gmurray.tech.blog.post.domain.PostTitle
 import spock.lang.Specification
 
@@ -22,7 +21,6 @@ class FindBlogPostByIdQueryHandlerTest extends Specification {
                 postId,
                 new PostTitle("Title"),
                 new PostDescription("Descriptions "),
-                [new PostTag("Tag1")].toSet(),
                 [new PostCategory("TEST")].toSet(),
                 new AuthorId(11L)
         )

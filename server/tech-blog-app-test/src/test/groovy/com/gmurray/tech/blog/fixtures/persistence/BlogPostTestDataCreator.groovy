@@ -72,7 +72,6 @@ class BlogPostTestDataCreator {
         post.title = postTestData.title
         post.description = postTestData.description
         post.status = postTestData.status
-        post.tags = "Test Tag"
 
 
         post.store()

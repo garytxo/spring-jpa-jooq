@@ -19,7 +19,6 @@ interface IBlogPost : Serializable {
     var authorId: Long?
     var title: String?
     var description: String?
-    var tags: String?
     var status: BlogPostStatus?
     var rowVersion: Int?
     var rowCreatedBy: String?

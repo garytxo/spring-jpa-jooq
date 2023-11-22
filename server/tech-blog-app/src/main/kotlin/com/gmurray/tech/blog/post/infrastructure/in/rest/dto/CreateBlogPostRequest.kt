@@ -27,14 +27,6 @@ class CreateBlogPostRequest (
 
 
     @field:Schema(
-        name = "tags", required = true,
-        title = "Blog post tags",
-        example = "[Tag1,Tag2]",
-    )
-    val tags: Set<String>,
-
-
-    @field:Schema(
         name = "category", required = true,
         title = "Blog post category",
         example = "TECHNOLOGY",

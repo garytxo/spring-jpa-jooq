@@ -24,10 +24,9 @@ class CreateBlogPostCommandHandlerTest extends Specification {
         def authorId = 112L
         def title = "Title"
         def description = "Description"
-        def tags = ["Test"].toSet()
         def category = Categories.ENTERTAINMENT
         def command = new CreateBlogPostUseCase.NewBlogPostCommand(
-                authorId,title,description,tags,[category].toSet()
+                authorId, title, description, [category].toSet()
         )
 
         when:

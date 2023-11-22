@@ -9,7 +9,6 @@ import com.gmurray.tech.blog.post.application.exception.PostAuthorDoesNotExistEx
 import com.gmurray.tech.blog.post.application.port.in.CreateBlogPostUseCase
 import com.gmurray.tech.blog.post.domain.Categories
 import com.gmurray.tech.blog.post.domain.PostId
-import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
@@ -38,9 +37,8 @@ class PostJooqStorageAdapterIT extends Specification {
         def authorId = 111L
         def title = "post title"
         def description = "post description"
-        def tags = ["Tag", "Tag2"].toSet()
         def categories = [Categories.ENTERTAINMENT].toSet()
-        def command = new CreateBlogPostUseCase.NewBlogPostCommand(authorId, title, description, tags, categories)
+        def command = new CreateBlogPostUseCase.NewBlogPostCommand(authorId, title, description, categories)
 
         when:
         postJooqStorageAdapter.create(command)
@@ -56,9 +54,8 @@ class PostJooqStorageAdapterIT extends Specification {
         def author = createAuthor("Joe", "Test").blogAuthor
         def title = "post title"
         def description = "post description"
-        def tags = ["tag","tag2"].toSet()
         def categories = [Categories.ENTERTAINMENT].toSet()
-        def command = new CreateBlogPostUseCase.NewBlogPostCommand(author.id,title,description,tags,categories)
+        def command = new CreateBlogPostUseCase.NewBlogPostCommand(author.id, title, description, categories)
 
         when:
         def newPostId = postJooqStorageAdapter.create(command)
@@ -69,8 +66,6 @@ class PostJooqStorageAdapterIT extends Specification {
         result.title == title
         result.authorId == author.id
         result.description == description
-        result.tags == StringUtils.join(tags, "  ")
-
 
     }
 

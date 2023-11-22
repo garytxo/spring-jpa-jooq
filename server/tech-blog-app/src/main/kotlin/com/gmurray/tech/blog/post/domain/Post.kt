@@ -6,7 +6,6 @@ data class Post(
     val id:PostId,
     val title : PostTitle,
     val description: PostDescription,
-    val tags:Set<PostTag>,
     val categories:Set<PostCategory>,
     val author:AuthorId
 )

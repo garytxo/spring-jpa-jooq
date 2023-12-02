@@ -1,6 +1,6 @@
 package com.gmurray.tech.blog.author.infrastructure.out.persistence.jooq
 
-import com.gmurray.tech.blog.author.application.port.`in`.CreateAuthorUseCase
+import com.gmurray.tech.blog.author.application.port.`in`.CreateAuthorCommand
 import com.gmurray.tech.blog.author.application.port.`in`.FindAuthorsUseCase
 import com.gmurray.tech.blog.author.application.port.out.CreateAuthorPort
 import com.gmurray.tech.blog.author.application.port.out.FindAuthorsPort
@@ -15,7 +15,7 @@ open class AuthorJooqStorageAdapter(private val authorJooqRepository: AuthorJooq
 
     private val logger = LoggerFactory.getLogger(AuthorJooqStorageAdapter::class.java)
 
-    override fun create(newAuthorCommand: CreateAuthorUseCase.NewAuthorCommand): Long {
+    override fun create(newAuthorCommand: CreateAuthorCommand): Long {
         logger.info("Saving author $newAuthorCommand")
         return authorJooqRepository.save(newAuthorCommand.toAuthorJooqEntity())
     }
@@ -34,7 +34,7 @@ open class AuthorJooqStorageAdapter(private val authorJooqRepository: AuthorJooq
             lastName = this.lastName
         )
 
-    private fun CreateAuthorUseCase.NewAuthorCommand.toAuthorJooqEntity() =
+    private fun CreateAuthorCommand.toAuthorJooqEntity() =
         AuthorJooqEntity(
             firstName = this.firstName,
             lastName = this.lastName,

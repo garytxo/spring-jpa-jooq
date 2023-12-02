@@ -1,6 +1,4 @@
-package com.gmurray.tech.blog.author.application.service
-
-import com.gmurray.tech.blog.author.application.port.in.CreateAuthorUseCase
+package com.gmurray.tech.blog.author.application.port.in
 import com.gmurray.tech.blog.author.application.port.out.CreateAuthorPort
 import com.gmurray.tech.blog.author.domain.AuthorId
 import spock.lang.Specification
@@ -10,7 +8,7 @@ class CreateAuthorCommandHandlerTest extends Specification {
     CreateAuthorPort createAuthorPort = Mock()
     def createAuthorCommandHandler = new CreateAuthorCommandHandler(createAuthorPort)
 
-    def "create should create new author and return its unique identifier"(){
+    def "handle should create new author and return its unique identifier"() {
 
         given:
         def id = 11L
@@ -18,10 +16,10 @@ class CreateAuthorCommandHandlerTest extends Specification {
         def firstName = "Gary"
         def lastName = "Murray"
         def email = "gary@mail.com"
-        def command = new CreateAuthorUseCase.NewAuthorCommand(firstName,lastName,email)
+        def command = new CreateAuthorCommand(firstName, lastName, email)
 
         when:
-        def result = createAuthorCommandHandler.create(command)
+        def result = createAuthorCommandHandler.handle(command)
 
 
         then:

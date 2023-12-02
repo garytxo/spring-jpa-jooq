@@ -1,6 +1,6 @@
 package com.gmurray.tech.blog.author.infrastructure.out.persistence.jooq
 
-import com.gmurray.tech.blog.author.application.port.in.CreateAuthorUseCase
+import com.gmurray.tech.blog.author.application.port.in.CreateAuthorCommand
 import com.gmurray.tech.blog.author.application.port.in.FindAuthorsUseCase
 import com.gmurray.tech.blog.fixtures.persistence.BlogPostTestData
 import com.gmurray.tech.blog.fixtures.persistence.BlogPostTestDataCreator
@@ -28,7 +28,7 @@ class AuthorJooqStorageAdapterIT extends Specification {
         def firstName = "Fname"
         def lastName = "Lname"
         def email = "email@email.com"
-        def command = new CreateAuthorUseCase.NewAuthorCommand(firstName,lastName,email)
+        def command = new CreateAuthorCommand(firstName, lastName, email)
 
         when:
         def result = authorJooqStorageAdapter.create(command)

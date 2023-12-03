@@ -27,7 +27,7 @@ class CommandBus(
         val handler = handlers[command::class.java]
             ?: throw IllegalArgumentException("No handler for command type ${command::class.java.simpleName}")
 
-        return (handler as CommandHandler<R, C>).handle(command)
+        return (handler as CommandHandler<R, C>).execute(command)
     }
 
 }

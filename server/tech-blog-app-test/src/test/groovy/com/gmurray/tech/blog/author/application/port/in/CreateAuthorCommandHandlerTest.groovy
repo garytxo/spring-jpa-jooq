@@ -8,7 +8,7 @@ class CreateAuthorCommandHandlerTest extends Specification {
     CreateAuthorPort createAuthorPort = Mock()
     def createAuthorCommandHandler = new CreateAuthorCommandHandler(createAuthorPort)
 
-    def "handle should create new author and return its unique identifier"() {
+    def "execute should create new author and return its unique identifier"() {
 
         given:
         def id = 11L
@@ -19,7 +19,7 @@ class CreateAuthorCommandHandlerTest extends Specification {
         def command = new CreateAuthorCommand(firstName, lastName, email)
 
         when:
-        def result = createAuthorCommandHandler.handle(command)
+        def result = createAuthorCommandHandler.execute(command)
 
 
         then:

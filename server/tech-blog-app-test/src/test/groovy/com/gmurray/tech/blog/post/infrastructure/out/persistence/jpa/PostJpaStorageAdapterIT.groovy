@@ -5,7 +5,7 @@ import com.gmurray.tech.blog.fixtures.persistence.BlogPostTestDataCreator
 import com.gmurray.tech.blog.fixtures.persistence.TestPostCategory
 import com.gmurray.tech.blog.fixtures.slices.JpaDbTest
 import com.gmurray.tech.blog.post.application.exception.PostAuthorDoesNotExistException
-import com.gmurray.tech.blog.post.application.port.in.CreateBlogPostUseCase
+import com.gmurray.tech.blog.post.application.port.in.CreateBlogPostCommand
 import com.gmurray.tech.blog.post.domain.Categories
 import com.gmurray.tech.blog.post.domain.PostId
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,7 +34,7 @@ class PostJpaStorageAdapterIT extends Specification {
         def title = "post title"
         def description = "post description"
         def categories = [Categories.ENTERTAINMENT].toSet()
-        def command = new CreateBlogPostUseCase.NewBlogPostCommand(authorId, title, description, categories)
+        def command = new CreateBlogPostCommand(authorId, title, description, categories)
 
         when:
         postJpaStorageAdapter.create(command)
@@ -51,7 +51,7 @@ class PostJpaStorageAdapterIT extends Specification {
         def title = "post title"
         def description = "post description"
         def categories = [Categories.ENTERTAINMENT].toSet()
-        def command = new CreateBlogPostUseCase.NewBlogPostCommand(authorId, title, description, categories)
+        def command = new CreateBlogPostCommand(authorId, title, description, categories)
 
         when:
         def result = postJpaStorageAdapter.create(command)

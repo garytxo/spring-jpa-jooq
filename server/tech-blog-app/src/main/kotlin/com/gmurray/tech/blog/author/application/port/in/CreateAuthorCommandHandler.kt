@@ -9,7 +9,7 @@ import com.gmurray.tech.blog.shared.application.service.CommandHandler
 class CreateAuthorCommandHandler(private val createAuthorPort: CreateAuthorPort) :
     CommandHandler<AuthorId, CreateAuthorCommand> {
 
-    override fun handle(command: CreateAuthorCommand): AuthorId {
+    override fun execute(command: CreateAuthorCommand): AuthorId {
         return AuthorId(createAuthorPort.create(command))
     }
 }

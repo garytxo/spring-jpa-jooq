@@ -8,7 +8,7 @@ import com.gmurray.tech.blog.infrastructure.persistence.jpa.PostJpaEntity
 import com.gmurray.tech.blog.infrastructure.persistence.jpa.PostJpaRepository
 import com.gmurray.tech.blog.infrastructure.persistence.shared.BlogPostStatus
 import com.gmurray.tech.blog.post.application.exception.PostAuthorDoesNotExistException
-import com.gmurray.tech.blog.post.application.port.`in`.CreateBlogPostUseCase
+import com.gmurray.tech.blog.post.application.port.`in`.CreateBlogPostCommand
 import com.gmurray.tech.blog.post.application.port.out.CreateBlogPostPort
 import com.gmurray.tech.blog.post.application.port.out.FindBlogPostByIdPort
 import com.gmurray.tech.blog.post.domain.Post
@@ -24,8 +24,8 @@ class PostJpaStorageAdapter(
 ) : CreateBlogPostPort, FindBlogPostByIdPort {
 
 
-    override fun create(newBlogPostCommand: CreateBlogPostUseCase.NewBlogPostCommand): Long {
-        val post = postJpaRepository.save(newBlogPostCommand.toNewPostJpaEntity())
+    override fun create(command: CreateBlogPostCommand): Long {
+        val post = postJpaRepository.save(command.toNewPostJpaEntity())
         return post.id!!
     }
 
@@ -45,7 +45,7 @@ class PostJpaStorageAdapter(
 
         )
 
-    private fun CreateBlogPostUseCase.NewBlogPostCommand.toNewPostJpaEntity() =
+    private fun CreateBlogPostCommand.toNewPostJpaEntity() =
         PostJpaEntity(
             author = this.getAuthor(),
             title = this.title,
@@ -54,13 +54,13 @@ class PostJpaStorageAdapter(
             categories = this.toJpaCategories()
         )
 
-    private fun CreateBlogPostUseCase.NewBlogPostCommand.toJpaCategories() =
+    private fun CreateBlogPostCommand.toJpaCategories() =
         this.categories.map {
             categoryJpaRepository.findByName(it.name)
         }.toSet()
 
 
-    private fun CreateBlogPostUseCase.NewBlogPostCommand.getAuthor() =
-            authorJpaRepository.findById(this.authorId)
-                .orElseThrow { PostAuthorDoesNotExistException("No author exist with id:${this.authorId}") }
+    private fun CreateBlogPostCommand.getAuthor() =
+        authorJpaRepository.findById(this.authorId)
+            .orElseThrow { PostAuthorDoesNotExistException("No author exist with id:${this.authorId}") }
 }

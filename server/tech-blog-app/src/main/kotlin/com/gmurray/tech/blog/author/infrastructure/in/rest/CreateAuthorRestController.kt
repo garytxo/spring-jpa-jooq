@@ -3,7 +3,7 @@ package com.gmurray.tech.blog.author.infrastructure.`in`.rest
 import com.gmurray.tech.blog.author.application.port.`in`.CreateAuthorCommand
 import com.gmurray.tech.blog.author.infrastructure.`in`.rest.dto.CreateAuthorRequest
 import com.gmurray.tech.blog.author.infrastructure.`in`.rest.dto.CreateAuthorResponse
-import com.gmurray.tech.blog.shared.application.service.CommandBus
+import com.gmurray.tech.blog.shared.application.command.CommandBus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content

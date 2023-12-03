@@ -1,4 +1,4 @@
-package com.gmurray.tech.blog.shared.application.service
+package com.gmurray.tech.blog.shared.application.command
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

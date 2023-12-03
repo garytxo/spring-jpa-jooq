@@ -1,7 +1,7 @@
 package com.gmurray.tech.blog.author.application.port.`in`
 
 import com.gmurray.tech.blog.author.domain.AuthorId
-import com.gmurray.tech.blog.shared.application.service.Command
+import com.gmurray.tech.blog.shared.application.command.Command
 
 class CreateAuthorCommand(
     val firstName:String,

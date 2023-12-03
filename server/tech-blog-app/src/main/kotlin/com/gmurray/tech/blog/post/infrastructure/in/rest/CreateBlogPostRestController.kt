@@ -4,7 +4,7 @@ import com.gmurray.tech.blog.post.application.port.`in`.CreateBlogPostCommand
 import com.gmurray.tech.blog.post.domain.Categories
 import com.gmurray.tech.blog.post.infrastructure.`in`.rest.dto.CreateBlogPostRequest
 import com.gmurray.tech.blog.post.infrastructure.`in`.rest.dto.CreateBlogPostResponse
-import com.gmurray.tech.blog.shared.application.service.CommandBus
+import com.gmurray.tech.blog.shared.application.command.CommandBus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content

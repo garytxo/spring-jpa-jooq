@@ -1,7 +1,7 @@
 package com.gmurray.tech.blog.author.infrastructure.out.persistence.jooq
 
 import com.gmurray.tech.blog.author.application.port.in.CreateAuthorCommand
-import com.gmurray.tech.blog.author.application.port.in.FindAuthorsQuery
+import com.gmurray.tech.blog.author.domain.FindAuthorSearchParams
 import com.gmurray.tech.blog.fixtures.persistence.BlogPostTestData
 import com.gmurray.tech.blog.fixtures.persistence.BlogPostTestDataCreator
 import com.gmurray.tech.blog.fixtures.slices.JooqDbTest
@@ -43,7 +43,7 @@ class AuthorJooqStorageAdapterIT extends Specification {
         blogPostTestDataCreator.createBlogPostWith(testData)
 
         and:
-        def query = new FindAuthorsQuery(testData.blogAuthor.firstName)
+        def query = new FindAuthorSearchParams(testData.blogAuthor.firstName)
 
         when:
         def result = authorJooqStorageAdapter.findBy(query)

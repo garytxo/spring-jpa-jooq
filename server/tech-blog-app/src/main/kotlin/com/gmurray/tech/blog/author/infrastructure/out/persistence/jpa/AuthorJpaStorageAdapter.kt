@@ -1,10 +1,10 @@
 package com.gmurray.tech.blog.author.infrastructure.out.persistence.jpa
 
 import com.gmurray.tech.blog.author.application.port.`in`.CreateAuthorCommand
-import com.gmurray.tech.blog.author.application.port.`in`.FindAuthorsQuery
 import com.gmurray.tech.blog.author.application.port.out.CreateAuthorPort
 import com.gmurray.tech.blog.author.application.port.out.FindAuthorsPort
 import com.gmurray.tech.blog.author.domain.BlogAuthor
+import com.gmurray.tech.blog.author.domain.FindAuthorSearchParams
 import com.gmurray.tech.blog.infrastructure.persistence.jpa.AuthorJpaEntity
 import com.gmurray.tech.blog.infrastructure.persistence.jpa.AuthorJpaRepository
 import org.slf4j.LoggerFactory
@@ -21,8 +21,8 @@ open class AuthorJpaStorageAdapter(private val authorJpaRepository: AuthorJpaRep
         return createdAuthor.id!!
     }
 
-    override fun findBy(findAuthorsQuery: FindAuthorsQuery) =
-        authorJpaRepository.findAllByFirstNameContainingIgnoreCase(findAuthorsQuery.firstName)
+    override fun findBy(findAuthorSearchParams: FindAuthorSearchParams) =
+        authorJpaRepository.findAllByFirstNameContainingIgnoreCase(findAuthorSearchParams.firstName)
             .map { it.toDomain() }
             .toSet()
 

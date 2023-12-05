@@ -7,6 +7,7 @@ import com.gmurray.tech.blog.post.domain.PostId
 import org.springframework.stereotype.Service
 
 @Service
+@Deprecated("")
 class FindBlogPostByIdQueryHandler(private val findBlogPostByIdPort: FindBlogPostByIdPort) : FindBlogPostByIdUseCase {
 
     override fun getBlogPostById(postId: PostId): Post {

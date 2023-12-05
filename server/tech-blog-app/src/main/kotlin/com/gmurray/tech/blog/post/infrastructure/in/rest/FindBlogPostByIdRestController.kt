@@ -1,9 +1,9 @@
 package com.gmurray.tech.blog.post.infrastructure.`in`.rest
 
-import com.gmurray.tech.blog.post.application.port.`in`.FindBlogPostByIdUseCase
+import com.gmurray.tech.blog.post.application.port.`in`.FindBlogPostByIdQuery
 import com.gmurray.tech.blog.post.domain.Post
-import com.gmurray.tech.blog.post.domain.PostId
 import com.gmurray.tech.blog.post.infrastructure.`in`.rest.dto.FindBlogPostResponse
+import com.gmurray.tech.blog.shared.application.query.QueryBus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController
 )
 @RestController
 class FindBlogPostByIdRestController(
-    private val findBlogPostByIdUseCase: FindBlogPostByIdUseCase
+    private val queryBus: QueryBus
 ) {
 
     @GetMapping(path = ["v1/blog/posts/{postId}"])
@@ -48,7 +48,7 @@ class FindBlogPostByIdRestController(
     fun findBy(
         @PathVariable postId: Long
     ) =
-        findBlogPostByIdUseCase.getBlogPostById(PostId(postId))
+        queryBus.dispatch(FindBlogPostByIdQuery(postId))
             .toResponse()
 
 

@@ -1,8 +1,9 @@
 package com.gmurray.tech.blog.author.infrastructure.`in`.rest
 
-import com.gmurray.tech.blog.author.application.port.`in`.CreateAuthorUseCase
+import com.gmurray.tech.blog.author.application.port.`in`.CreateAuthorCommand
 import com.gmurray.tech.blog.author.infrastructure.`in`.rest.dto.CreateAuthorRequest
 import com.gmurray.tech.blog.author.infrastructure.`in`.rest.dto.CreateAuthorResponse
+import com.gmurray.tech.blog.shared.application.command.CommandBus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController
 )
 @RestController
 class CreateAuthorRestController(
-    private val createAuthorUseCase: CreateAuthorUseCase
+    private val commandBus: CommandBus
 ) {
 
 
@@ -54,14 +55,14 @@ class CreateAuthorRestController(
     ): CreateAuthorResponse {
 
         val newAuthor = createAuthorRequest.toNewAuthor()
-        val id =  createAuthorUseCase.create(newAuthor)
+        val id = commandBus.dispatch(newAuthor)
 
         return CreateAuthorResponse(id.value())
     }
 
 
     private fun CreateAuthorRequest.toNewAuthor() =
-        CreateAuthorUseCase.NewAuthorCommand(
+        CreateAuthorCommand(
             firstName = this.firstName,
             lastName = this.lastName,
             email = this.email

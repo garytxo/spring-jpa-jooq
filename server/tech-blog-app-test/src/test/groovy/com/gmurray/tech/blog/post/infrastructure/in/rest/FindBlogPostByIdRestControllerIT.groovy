@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE
 
-class FindBlogPostByIdRestControllerTest extends RestIntegrationTest {
+class FindBlogPostByIdRestControllerIT extends RestIntegrationTest {
 
     @Autowired
     BlogPostTestDataCreator blogPostTestDataCreator

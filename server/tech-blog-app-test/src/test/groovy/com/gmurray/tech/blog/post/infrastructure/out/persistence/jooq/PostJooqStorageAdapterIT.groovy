@@ -6,7 +6,7 @@ import com.gmurray.tech.blog.fixtures.persistence.TestPostCategory
 import com.gmurray.tech.blog.fixtures.slices.JooqDbTest
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.daos.BlogPostDao
 import com.gmurray.tech.blog.post.application.exception.PostAuthorDoesNotExistException
-import com.gmurray.tech.blog.post.application.port.in.CreateBlogPostUseCase
+import com.gmurray.tech.blog.post.application.port.in.CreateBlogPostCommand
 import com.gmurray.tech.blog.post.domain.Categories
 import com.gmurray.tech.blog.post.domain.PostId
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,7 +38,7 @@ class PostJooqStorageAdapterIT extends Specification {
         def title = "post title"
         def description = "post description"
         def categories = [Categories.ENTERTAINMENT].toSet()
-        def command = new CreateBlogPostUseCase.NewBlogPostCommand(authorId, title, description, categories)
+        def command = new CreateBlogPostCommand(authorId, title, description, categories)
 
         when:
         postJooqStorageAdapter.create(command)
@@ -55,7 +55,7 @@ class PostJooqStorageAdapterIT extends Specification {
         def title = "post title"
         def description = "post description"
         def categories = [Categories.ENTERTAINMENT].toSet()
-        def command = new CreateBlogPostUseCase.NewBlogPostCommand(author.id, title, description, categories)
+        def command = new CreateBlogPostCommand(author.id, title, description, categories)
 
         when:
         def newPostId = postJooqStorageAdapter.create(command)

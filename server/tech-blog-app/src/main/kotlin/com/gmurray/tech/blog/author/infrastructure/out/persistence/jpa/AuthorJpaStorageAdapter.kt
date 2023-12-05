@@ -1,10 +1,10 @@
 package com.gmurray.tech.blog.author.infrastructure.out.persistence.jpa
 
-import com.gmurray.tech.blog.author.application.port.`in`.CreateAuthorUseCase
-import com.gmurray.tech.blog.author.application.port.`in`.FindAuthorsUseCase
+import com.gmurray.tech.blog.author.application.port.`in`.CreateAuthorCommand
 import com.gmurray.tech.blog.author.application.port.out.CreateAuthorPort
 import com.gmurray.tech.blog.author.application.port.out.FindAuthorsPort
 import com.gmurray.tech.blog.author.domain.BlogAuthor
+import com.gmurray.tech.blog.author.domain.FindAuthorSearchParams
 import com.gmurray.tech.blog.infrastructure.persistence.jpa.AuthorJpaEntity
 import com.gmurray.tech.blog.infrastructure.persistence.jpa.AuthorJpaRepository
 import org.slf4j.LoggerFactory
@@ -13,7 +13,7 @@ open class AuthorJpaStorageAdapter(private val authorJpaRepository: AuthorJpaRep
 
     private val logger = LoggerFactory.getLogger(AuthorJpaStorageAdapter::class.java)
 
-    override fun create(newAuthorCommand: CreateAuthorUseCase.NewAuthorCommand): Long {
+    override fun create(newAuthorCommand: CreateAuthorCommand): Long {
         logger.info("Saving author $newAuthorCommand")
 
         val createdAuthor = authorJpaRepository.save(newAuthorCommand.toJpa())
@@ -21,8 +21,8 @@ open class AuthorJpaStorageAdapter(private val authorJpaRepository: AuthorJpaRep
         return createdAuthor.id!!
     }
 
-    override fun findBy(searchAuthorQuery: FindAuthorsUseCase.SearchAuthorQuery)=
-        authorJpaRepository.findAllByFirstNameContainingIgnoreCase(searchAuthorQuery.firstName)
+    override fun findBy(findAuthorSearchParams: FindAuthorSearchParams) =
+        authorJpaRepository.findAllByFirstNameContainingIgnoreCase(findAuthorSearchParams.firstName)
             .map { it.toDomain() }
             .toSet()
 
@@ -33,7 +33,8 @@ open class AuthorJpaStorageAdapter(private val authorJpaRepository: AuthorJpaRep
             firstName = this.firstName,
             lastName = this.lastName
         )
-    private fun CreateAuthorUseCase.NewAuthorCommand.toJpa() =
+
+    private fun CreateAuthorCommand.toJpa() =
         AuthorJpaEntity(
             firstName = this.firstName,
             lastName = this.lastName,

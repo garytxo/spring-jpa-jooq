@@ -1,9 +1,10 @@
 package com.gmurray.tech.blog.post.infrastructure.`in`.rest
 
-import com.gmurray.tech.blog.post.application.port.`in`.CreateBlogPostUseCase
+import com.gmurray.tech.blog.post.application.port.`in`.CreateBlogPostCommand
 import com.gmurray.tech.blog.post.domain.Categories
 import com.gmurray.tech.blog.post.infrastructure.`in`.rest.dto.CreateBlogPostRequest
 import com.gmurray.tech.blog.post.infrastructure.`in`.rest.dto.CreateBlogPostResponse
+import com.gmurray.tech.blog.shared.application.command.CommandBus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController
 )
 @RestController
 class CreateBlogPostRestController(
-    private val createBlogPostUseCase: CreateBlogPostUseCase
+    private val commandBus: CommandBus
 ) {
 
     @PostMapping(path = ["v1/blog/posts"])
@@ -52,12 +53,12 @@ class CreateBlogPostRestController(
         )
         @org.springframework.web.bind.annotation.RequestBody createBlogPostRequest: CreateBlogPostRequest
     ):CreateBlogPostResponse{
-       val postId = createBlogPostUseCase.execute(createBlogPostRequest.toCommand())
+        val postId = commandBus.dispatch(createBlogPostRequest.toCommand())
        return CreateBlogPostResponse(postId.value())
     }
 
     fun CreateBlogPostRequest.toCommand() =
-        CreateBlogPostUseCase.NewBlogPostCommand(
+        CreateBlogPostCommand(
             authorId = this.authorId,
             title = this.title,
             description = this.description,

@@ -7,7 +7,7 @@ import com.gmurray.tech.blog.infrastructure.persistence.jooq.PostJooqEntity
 import com.gmurray.tech.blog.infrastructure.persistence.jooq.PostJooqRepository
 import com.gmurray.tech.blog.infrastructure.persistence.shared.BlogPostStatus
 import com.gmurray.tech.blog.post.application.exception.PostAuthorDoesNotExistException
-import com.gmurray.tech.blog.post.application.port.`in`.CreateBlogPostUseCase
+import com.gmurray.tech.blog.post.application.port.`in`.CreateBlogPostCommand
 import com.gmurray.tech.blog.post.application.port.out.CreateBlogPostPort
 import com.gmurray.tech.blog.post.application.port.out.FindBlogPostByIdPort
 import com.gmurray.tech.blog.post.domain.Post
@@ -35,10 +35,10 @@ class PostJooqStorageAdapter(
             author = AuthorId(this.authorId)
         )
 
-    override fun create(newBlogPostCommand: CreateBlogPostUseCase.NewBlogPostCommand) =
-        postJooqRepository.save(newBlogPostCommand.toPostJooqEntity())
+    override fun create(command: CreateBlogPostCommand) =
+        postJooqRepository.save(command.toPostJooqEntity())
 
-    private fun CreateBlogPostUseCase.NewBlogPostCommand.toPostJooqEntity() =
+    private fun CreateBlogPostCommand.toPostJooqEntity() =
         PostJooqEntity(
             id = null,
             title = this.title,
@@ -48,11 +48,11 @@ class PostJooqStorageAdapter(
             authorId = this.getAuthor().id!!,
         )
 
-    private fun CreateBlogPostUseCase.NewBlogPostCommand.toPostCategories() =
+    private fun CreateBlogPostCommand.toPostCategories() =
         this.categories.map { PostCategoryEntity(null, it.name) }.toList()
 
 
-    private fun CreateBlogPostUseCase.NewBlogPostCommand.getAuthor() =
+    private fun CreateBlogPostCommand.getAuthor() =
         authorJooqRepository.findById(this.authorId)
             ?: throw PostAuthorDoesNotExistException("No author exist with id:${this.authorId}")
 

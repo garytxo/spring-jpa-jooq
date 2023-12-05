@@ -1,4 +1,4 @@
-package com.gmurray.tech.blog.post.application.service
+package com.gmurray.tech.blog.post.application.port.in
 
 import com.gmurray.tech.blog.author.domain.AuthorId
 import com.gmurray.tech.blog.post.application.port.out.FindBlogPostByIdPort
@@ -14,9 +14,11 @@ class FindBlogPostByIdQueryHandlerTest extends Specification {
     FindBlogPostByIdPort getBlogPostByIdPort = Mock()
     def getBlogPostByIdQueryHandler = new FindBlogPostByIdQueryHandler(getBlogPostByIdPort)
 
-    def "getBlogPostById should should return Post when given a valid id "() {
+    def "handle should should return Post when given a valid id "() {
         given:
-        def postId = new PostId(11L)
+        def id = 11L
+        def postId = new PostId(id)
+        def query = new FindBlogPostByIdQuery(id)
         def expectedPost = new Post(
                 postId,
                 new PostTitle("Title"),
@@ -26,7 +28,7 @@ class FindBlogPostByIdQueryHandlerTest extends Specification {
         )
 
         when:
-        def result = getBlogPostByIdQueryHandler.getBlogPostById(postId)
+        def result = getBlogPostByIdQueryHandler.handle(query)
 
         then:
         result != null

@@ -1,7 +1,7 @@
 package com.gmurray.tech.blog.author.infrastructure.out.persistence.jpa
 
 import com.gmurray.tech.blog.author.application.port.`in`.CreateAuthorCommand
-import com.gmurray.tech.blog.author.application.port.`in`.FindAuthorsUseCase
+import com.gmurray.tech.blog.author.application.port.`in`.FindAuthorsQuery
 import com.gmurray.tech.blog.author.application.port.out.CreateAuthorPort
 import com.gmurray.tech.blog.author.application.port.out.FindAuthorsPort
 import com.gmurray.tech.blog.author.domain.BlogAuthor
@@ -21,8 +21,8 @@ open class AuthorJpaStorageAdapter(private val authorJpaRepository: AuthorJpaRep
         return createdAuthor.id!!
     }
 
-    override fun findBy(searchAuthorQuery: FindAuthorsUseCase.SearchAuthorQuery)=
-        authorJpaRepository.findAllByFirstNameContainingIgnoreCase(searchAuthorQuery.firstName)
+    override fun findBy(findAuthorsQuery: FindAuthorsQuery) =
+        authorJpaRepository.findAllByFirstNameContainingIgnoreCase(findAuthorsQuery.firstName)
             .map { it.toDomain() }
             .toSet()
 

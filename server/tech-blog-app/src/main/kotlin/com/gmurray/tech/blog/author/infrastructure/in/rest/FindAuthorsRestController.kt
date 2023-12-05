@@ -1,5 +1,6 @@
 package com.gmurray.tech.blog.author.infrastructure.`in`.rest
 
+import com.gmurray.tech.blog.author.application.port.`in`.FindAuthorsQuery
 import com.gmurray.tech.blog.author.application.port.`in`.FindAuthorsUseCase
 import com.gmurray.tech.blog.author.domain.BlogAuthor
 import com.gmurray.tech.blog.author.infrastructure.`in`.rest.dto.FindAuthorsResponse
@@ -47,7 +48,7 @@ class FindAuthorsRestController(
     fun findByName(
         @PathVariable name: String
     ): Set<FindAuthorsResponse> {
-        return findAuthorsUseCase.findBy(FindAuthorsUseCase.SearchAuthorQuery(name))
+        return findAuthorsUseCase.findBy(FindAuthorsQuery(name))
             .map { it.toResponse() }
             .toSet()
     }

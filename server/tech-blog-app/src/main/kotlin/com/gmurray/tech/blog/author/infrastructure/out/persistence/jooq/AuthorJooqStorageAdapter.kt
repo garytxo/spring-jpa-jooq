@@ -1,7 +1,7 @@
 package com.gmurray.tech.blog.author.infrastructure.out.persistence.jooq
 
 import com.gmurray.tech.blog.author.application.port.`in`.CreateAuthorCommand
-import com.gmurray.tech.blog.author.application.port.`in`.FindAuthorsUseCase
+import com.gmurray.tech.blog.author.application.port.`in`.FindAuthorsQuery
 import com.gmurray.tech.blog.author.application.port.out.CreateAuthorPort
 import com.gmurray.tech.blog.author.application.port.out.FindAuthorsPort
 import com.gmurray.tech.blog.author.domain.BlogAuthor
@@ -20,8 +20,8 @@ open class AuthorJooqStorageAdapter(private val authorJooqRepository: AuthorJooq
         return authorJooqRepository.save(newAuthorCommand.toAuthorJooqEntity())
     }
 
-    override fun findBy(searchAuthorQuery: FindAuthorsUseCase.SearchAuthorQuery): Set<BlogAuthor> {
-        return authorJooqRepository.searchBy(searchAuthorQuery.firstName)
+    override fun findBy(findAuthorsQuery: FindAuthorsQuery): Set<BlogAuthor> {
+        return authorJooqRepository.searchBy(findAuthorsQuery.firstName)
             .map { it.toDomain() }
             .toSet()
 

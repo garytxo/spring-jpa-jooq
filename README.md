@@ -49,12 +49,12 @@ In order to install and start the application please ensure that you have the fo
 ## Instructions 
 
 ### 1. Checkout the code
-The code can be found in GitHub repo https://github.com/garytxo/jooq-demo
+The code can be found in GitHub repo [https://github.com/garytxo/jooq-demo](https://github.com/garytxo/spring-jpa-jooq)
 
 ### 2. Clone repository locally using
 Clone repository locally using
    ```shell 
-     git clone git@ggithub.com/garytxo/jooq-demo.git
+     git clone git@github.com/garytxo/spring-jpa-jooq.git
    ```
 ### 3. Docker Container
 

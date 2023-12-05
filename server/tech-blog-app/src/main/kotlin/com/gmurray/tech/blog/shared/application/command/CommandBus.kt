@@ -12,14 +12,13 @@ class CommandBus(
 
     private val logger = LoggerFactory.getLogger(CommandBus::class.java)
 
-    private var handlers: Map<Class<*>, CommandHandler<*, *>> = commandHandlers.associateBy {
-        (it.javaClass.genericInterfaces[0] as ParameterizedType)
-            .actualTypeArguments[1] as Class<*>
-    }
+    private var handlers: Map<Class<*>, CommandHandler<*, *>> =
+        commandHandlers.associateBy { (it.javaClass.superclass.genericInterfaces[0] as ParameterizedType).actualTypeArguments[1] as Class<*> }
 
 
     init {
         logger.info("Command Handlers loaded ${handlers.size}")
+        handlers.forEach { command, handler -> logger.info("Loaded command:${command.simpleName} -> handler:${handler.javaClass.simpleName}") }
     }
 
     @Suppress("UNCHECKED_CAST")

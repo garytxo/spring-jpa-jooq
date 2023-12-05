@@ -1,9 +1,9 @@
 package com.gmurray.tech.blog.author.infrastructure.`in`.rest
 
 import com.gmurray.tech.blog.author.application.port.`in`.FindAuthorsQuery
-import com.gmurray.tech.blog.author.application.port.`in`.FindAuthorsUseCase
 import com.gmurray.tech.blog.author.domain.BlogAuthor
 import com.gmurray.tech.blog.author.infrastructure.`in`.rest.dto.FindAuthorsResponse
+import com.gmurray.tech.blog.shared.application.query.QueryBus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController
 )
 @RestController
 class FindAuthorsRestController(
-    private val findAuthorsUseCase: FindAuthorsUseCase
+    private val queryBus: QueryBus
 ) {
 
 
@@ -48,7 +48,7 @@ class FindAuthorsRestController(
     fun findByName(
         @PathVariable name: String
     ): Set<FindAuthorsResponse> {
-        return findAuthorsUseCase.findBy(FindAuthorsQuery(name))
+        return queryBus.dispatch(FindAuthorsQuery(name))
             .map { it.toResponse() }
             .toSet()
     }

@@ -35,3 +35,4 @@ build/
 ##others
 .DS_Store 
 .tool-versions
+.flattened-pom.xml

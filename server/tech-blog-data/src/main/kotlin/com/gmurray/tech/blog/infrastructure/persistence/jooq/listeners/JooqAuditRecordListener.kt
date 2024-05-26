@@ -1,11 +1,9 @@
-package com.volkswagenag.recall2.datatransfer.shared.infrastructure.persistence.jooq.listener
-
+package com.gmurray.tech.blog.infrastructure.persistence.jooq.listeners
 import com.gmurray.tech.blog.infrastructure.jooq.codegen.TechBlogAuditableAwareRecord
 import com.gmurray.tech.blog.infrastructure.persistence.jooq.audit.AuditAwareService
 import org.jooq.RecordContext
 import org.jooq.RecordListener
 import org.slf4j.LoggerFactory
-import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 
 

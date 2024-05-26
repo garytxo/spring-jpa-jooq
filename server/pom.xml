@@ -12,7 +12,7 @@
         -->
     <groupId>com.gmurray</groupId>
     <artifactId>tech-blog</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <description>Demo project illustrating spring and jooq features with JPA</description>
     <modules>
@@ -24,6 +24,7 @@
 
     </modules>
     <properties>
+        <revision>0.0.2-SNAPSHOT</revision>
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -50,9 +51,7 @@
 
         <jooq.version>3.18.6</jooq.version>
 
-        <tech.data.jpa.version>0.0.1-SNAPSHOT</tech.data.jpa.version>
-        <tech.data.jooq.version>0.0.1-SNAPSHOT</tech.data.jooq.version>
-        <tech.data.shared.version>0.0.1-SNAPSHOT</tech.data.shared.version>
+
 
         <jooq.codegen.database.name>demo_tech_blog</jooq.codegen.database.name>
         <jooq.codegen.metadata.codegen.package>com.gmurray.tech.blog.infrastructure.jooq.persistence</jooq.codegen.metadata.codegen.package>
@@ -74,7 +73,23 @@
             <dependency>
                 <groupId>com.gmurray</groupId>
                 <artifactId>tech-blog-data</artifactId>
-                <version>${tech.blog.data.version}</version>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.gmurray</groupId>
+                <artifactId>tech-blog-shared</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.gmurray</groupId>
+                <artifactId>tech-blog-data-jooq</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.gmurray</groupId>
+                <artifactId>tech-blog-app</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>

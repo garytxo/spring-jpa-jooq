@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.gmurray</groupId>
         <artifactId>tech-blog</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>tech-blog-data-jooq</artifactId>
@@ -41,7 +41,6 @@
         <dependency>
             <groupId>com.gmurray</groupId>
             <artifactId>tech-blog-shared</artifactId>
-            <version>${tech.data.shared.version}</version>
         </dependency>
     </dependencies>
 

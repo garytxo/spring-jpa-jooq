@@ -78,11 +78,11 @@ Clone repository locally using
 
 ####  Manage containers individually:
    ```shell
-   cd recall2-data-transfer-docker-setup
+   cd jooq-demo-docker-setup
    make start-localstack-service / stop-localstack-service / restart-localstack-service
    ```
    ```shell
-   cd recall2-data-transfer-docker-setup
+   cd jooq-demo-docker-setup
    make start-postgres-db-service / stop-postgres-db-service / restart-postgres-db-service
    ```
 
@@ -90,9 +90,10 @@ Clone repository locally using
 
 #### Create demo_tech_blog schema
 Create the empty database using the following
+
    ```shell
-    psql -h localhost -p 5435 -U admin -c "CREATE DATABASE demo_tech_blog";
-    psql -h localhost -p 5435 -U admin -c "CREATE DATABASE demo_tech_blog_test";
+    psql -h localhost -p 5436 -U admin -c "CREATE DATABASE demo_tech_blog";
+    psql -h localhost -p 5436 -U admin -c "CREATE DATABASE demo_tech_blog_test";
    ```
 If you need to DROP the database execute
    ```shell    

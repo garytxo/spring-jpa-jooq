@@ -54,15 +54,7 @@
         </test-coverage.additional-exclusions>
 
         <jooq.version>3.18.6</jooq.version>
-
-
-        <jooq.codegen.database.name>demo_tech_blog</jooq.codegen.database.name>
-        <jooq.codegen.metadata.codegen.package>com.gmurray.tech.blog.infrastructure.jooq.persistence
-        </jooq.codegen.metadata.codegen.package>
-        <jooq.codegen.postgresql.docker.version>12</jooq.codegen.postgresql.docker.version>
-        <jooq.codegen.postgresql.client.version>42.3.7</jooq.codegen.postgresql.client.version>
-        <jooq.codegen.docker-maven-plugin.version>0.40.2</jooq.codegen.docker-maven-plugin.version>
-        <jooq.codegen.flyway-maven-plugin.version>9.17.0</jooq.codegen.flyway-maven-plugin.version>
+        <postgresql.version>42.7.2</postgresql.version>
 
 
     </properties>
@@ -135,6 +127,12 @@
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-kotlin</artifactId>
                 <version>${jooq.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

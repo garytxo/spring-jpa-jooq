@@ -1,4 +1,4 @@
-package com.gmurray.tech.blog.infrastructure.jooq.codegen
+package com.gmurray.tech.blog.infrastructure.persistence.jooq.codegen
 
 
 import org.jooq.codegen.DefaultGeneratorStrategy
@@ -25,10 +25,10 @@ class TechBlogJooqGeneratorStrategy : DefaultGeneratorStrategy() {
 
         if (mode == GeneratorStrategy.Mode.RECORD) {
 
-            return if(EXCLUDED_AUDITABLE_TABLES.contains(definition.qualifiedName)){
+            return if (EXCLUDED_AUDITABLE_TABLES.contains(definition.qualifiedName)) {
                 log.info("SKIPPING  table:${definition.qualifiedName} as TechBlogAuditableAwareRecord")
                 mutableListOf()
-            }else{
+            } else {
                 log.info("MARK table:${definition.qualifiedName} as TechBlogAuditableAwareRecord")
                 mutableListOf(TechBlogAuditableAwareRecord::class.java.name)
             }

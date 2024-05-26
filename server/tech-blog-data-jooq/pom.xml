@@ -11,7 +11,17 @@
 
     <artifactId>tech-blog-data-jooq</artifactId>
 
-    <properties />
+    <properties>
+        
+        <!-- jooq codegen properties -->
+        <jooq.codegen.database.name>demo_tech_blog</jooq.codegen.database.name>
+        <jooq.codegen.metadata.codegen.package>com.gmurray.tech.blog.infrastructure.jooq.persistence
+        </jooq.codegen.metadata.codegen.package>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <testcontainers.version>1.18.3</testcontainers.version>
+        <testcontainers.jooq.codegen.maven.plugin.version>0.0.4</testcontainers.jooq.codegen.maven.plugin.version>
+
+    </properties>
 
     <dependencies>
         <dependency>
@@ -20,23 +30,19 @@
         </dependency>
         <dependency>
             <groupId>org.jooq</groupId>
-            <artifactId>jooq-codegen</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq-meta</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq-meta-extensions</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jooq</groupId>
             <artifactId>jooq-kotlin</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
+            <artifactId>spring-jdbc</artifactId>
         </dependency>
         <dependency>
             <groupId>com.gmurray</groupId>
@@ -56,179 +62,99 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-jooq-codegen-maven-plugin</artifactId>
+                <version>${testcontainers.jooq.codegen.maven.plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.testcontainers</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>${testcontainers.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>${postgresql.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>generate-jooq-sources</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <database>
+                                <type>POSTGRES</type>
+                                <containerImage>postgres:15-alpine</containerImage> <!-- optional -->
+                                <username>test</username> <!-- optional -->
+                                <password>test</password> <!-- optional -->
+                                <databaseName>${jooq.codegen.database.name}</databaseName> <!-- optional -->
+                            </database>
+                            <flyway>
+                                <locations>
+                                    filesystem:${project.basedir}/../tech-blog-data/src/main/resources/db/blog-migration
+                                </locations>
+                            </flyway>
+                            <!-- Generator parameters -->
+                            <jooq>
+                                <generator>
+                                    <name>org.jooq.codegen.KotlinGenerator</name>
 
+                                    <strategy>
+                                        <name>
+                                            com.gmurray.tech.blog.infrastructure.persistence.jooq.codegen.TechBlogJooqGeneratorStrategy
+                                        </name>
+                                    </strategy>
+                                    <generate>
+                                        <jpaAnnotations>false</jpaAnnotations>
+                                        <pojos>true</pojos>
+                                        <daos>true</daos>
+                                        <interfaces>true</interfaces>
+                                        <validationAnnotations>false</validationAnnotations>
+                                        <springAnnotations>true</springAnnotations>
+                                        <routines>false</routines>
+                                        <sequences>true</sequences>
+                                        <jsonTypes>true</jsonTypes>
+                                    </generate>
+
+                                    <database>
+                                        <name>org.jooq.meta.postgres.PostgresDatabase</name>
+                                        <inputSchema>tech_blog</inputSchema>
+                                        <includes>.*</includes>
+                                        <excludes>DefaultCatalog | flyway_schema_history | shedlock | batch_.*
+                                        </excludes>
+                                        <includeIndexes>false</includeIndexes>
+                                        <recordVersionFields>row_version</recordVersionFields>
+                                        <recordTimestampFields>row_created_on | row_updated_on</recordTimestampFields>
+                                        <forcedTypes>
+
+                                            <forcedType>
+                                                <userType>
+                                                    com.gmurray.tech.blog.infrastructure.persistence.shared.BlogPostStatus
+                                                </userType>
+                                                <enumConverter>true</enumConverter>
+                                                <includeExpression>blog_post.status</includeExpression>
+                                            </forcedType>
+                                        </forcedTypes>
+                                    </database>
+                                    <target>
+                                        <directory>src/main/kotlin</directory>
+                                        <packageName>${jooq.codegen.metadata.codegen.package}</packageName>
+                                        <clean>true</clean>
+                                        <encoding>UTF-8</encoding>
+                                        <locale>en</locale>
+                                    </target>
+                                </generator>
+                            </jooq>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
     </build>
-
-    <profiles>
-        <profile>
-            <id>generate_db_metadata</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>io.fabric8</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                        <version>${jooq.codegen.docker-maven-plugin.version}</version>
-                        <configuration>
-                            <verbose>true</verbose>
-                            <showLogs>true</showLogs>
-                            <autoCreateCustomNetworks>true</autoCreateCustomNetworks>
-                            <images>
-                                <image>
-                                    <name>postgres:${jooq.codegen.postgresql.docker.version}</name>
-                                    <alias>database</alias>
-                                    <run>
-                                        <network>
-                                            <mode>custom</mode>
-                                            <name>jooq-codegen-network</name>
-                                            <alias>db</alias>
-                                        </network>
-                                        <namingStrategy>alias</namingStrategy>
-                                        <tmpfs>
-                                            <mount>/var/lib/postgresql</mount>
-                                        </tmpfs>
-                                        <wait>
-                                            <log>database system is ready to accept connections</log>
-                                            <time>30000</time> <!-- 30 seconds -->
-                                        </wait>
-                                        <env>
-                                            <POSTGRES_USER>postgres</POSTGRES_USER>
-                                            <POSTGRES_PASSWORD>psql</POSTGRES_PASSWORD>
-                                            <POSTGRES_DB>${jooq.codegen.database.name}</POSTGRES_DB>
-                                        </env>
-                                    </run>
-                                </image>
-                                <image>
-                                    <name>maven:3.8.6-openjdk-18-slim</name>
-                                    <alias>codegen-runner</alias>
-                                    <run>
-                                        <network>
-                                            <mode>custom</mode>
-                                            <name>jooq-codegen-network</name>
-                                            <alias>db</alias>
-                                        </network>
-                                        <namingStrategy>alias</namingStrategy>
-                                        <dependsOn>
-                                            <container>database</container>
-                                        </dependsOn>
-                                        <volumes>
-                                            <bind>
-                                                <!-- Mounts the project workspace for jOOQ models generation. -->
-                                                <volume>
-                                                    ${session.executionRootDirectory}:${session.executionRootDirectory}
-                                                </volume>
-                                                <!-- Mounts the Maven repository so that the Docker container doesn't have to re-download dependencies. -->
-                                                <volume>~/.m2:/root/.m2</volume>
-                                            </bind>
-                                        </volumes>
-                                        <wait>
-                                            <log>jOOQ code generation Completed</log>
-                                            <time>90000</time> <!-- 90 seconds -->
-                                        </wait>
-                                        <cmd>${session.executionRootDirectory}</cmd>
-                                        <entrypoint>
-                                            <shell>${project.basedir}/src/main/resources/metadata-generation.sh</shell>
-                                        </entrypoint>
-                                    </run>
-                                </image>
-                            </images>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <!-- There is the potential that a failure allows containers to hang around after Maven exits,
-                                     so we should attempt to clean up the containers during the clean phase -->
-                                    <goal>stop</goal>
-                                    <goal>start</goal>
-                                    <goal>stop</goal>
-                                </goals>
-                                <phase>generate-sources</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>jooq_codegen</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jooq</groupId>
-                        <artifactId>jooq-codegen-maven</artifactId>
-                        <version>${jooq.version}</version>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.postgresql</groupId>
-                                <artifactId>postgresql</artifactId>
-                                <version>${jooq.codegen.postgresql.client.version}</version>
-                            </dependency>
-                        </dependencies>
-                        <configuration>
-                            <jdbc>
-                                <driver>org.postgresql.Driver</driver>
-                                <url>jdbc:postgresql://database:5432/${jooq.codegen.database.name}</url>
-                                <user>postgres</user>
-                                <password>psql</password>
-                            </jdbc>
-                            <generator>
-                                <name>org.jooq.codegen.KotlinGenerator</name>
-                                <strategy>
-                                    <name>
-                                        com.gmurray.tech.blog.infrastructure.jooq.codegen.TechBlogJooqGeneratorStrategy
-                                    </name>
-                                </strategy>
-                                <generate>
-                                    <jpaAnnotations>false</jpaAnnotations>
-                                    <pojos>true</pojos>
-                                    <daos>true</daos>
-                                    <interfaces>true</interfaces>
-                                    <validationAnnotations>false</validationAnnotations>
-                                    <springAnnotations>true</springAnnotations>
-                                    <routines>false</routines>
-                                    <sequences>true</sequences>
-                                    <jsonTypes>true</jsonTypes>
-                                </generate>
-
-                                <database>
-                                    <name>org.jooq.meta.postgres.PostgresDatabase</name>
-                                    <inputSchema>tech_blog</inputSchema>
-                                    <includes>.*</includes>
-                                    <excludes>DefaultCatalog | flyway_schema_history | shedlock | batch_.*</excludes>
-                                    <includeIndexes>false</includeIndexes>
-                                    <recordVersionFields>row_version</recordVersionFields>
-                                    <recordTimestampFields>row_created_on | row_updated_on</recordTimestampFields>
-                                    <forcedTypes>
-
-                                        <forcedType>
-                                            <userType>com.gmurray.tech.blog.infrastructure.persistence.shared.BlogPostStatus</userType>
-                                            <enumConverter>true</enumConverter>
-                                            <includeExpression>blog_post.status</includeExpression>
-                                        </forcedType>
-                                    </forcedTypes>
-                                </database>
-                                <target>
-                                    <directory>src/main/kotlin</directory>
-                                    <packageName>${jooq.codegen.metadata.codegen.package}</packageName>
-                                    <clean>true</clean>
-                                    <encoding>UTF-8</encoding>
-                                    <locale>en</locale>
-                                </target>
-                            </generator>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>generate</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>

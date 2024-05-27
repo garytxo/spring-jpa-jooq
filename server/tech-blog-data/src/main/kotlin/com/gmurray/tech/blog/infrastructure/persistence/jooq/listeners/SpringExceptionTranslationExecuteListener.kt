@@ -1,5 +1,4 @@
-package com.volkswagenag.recall2.datatransfer.shared.infrastructure.persistence.jooq.listener
-
+package com.gmurray.tech.blog.infrastructure.persistence.jooq.listeners
 import org.jooq.ExecuteContext
 import org.jooq.ExecuteListener
 import org.jooq.SQLDialect

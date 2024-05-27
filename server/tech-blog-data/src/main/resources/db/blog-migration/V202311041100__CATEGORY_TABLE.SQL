@@ -31,9 +31,9 @@ values
 
 CREATE TABLE tech_blog.post_post_category
 (
-    post_id        bigint                     NOT NULL,
-    category_id        bigint                     NOT NULL,
-    CONSTRAINT pk_post_post_category PRIMARY KEY (post_id,category_id),
-    CONSTRAINT fk_post_post_category_category_id FOREIGN KEY (category_id) REFERENCES post_category(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT fk_post_post_category_post_id FOREIGN KEY (post_id) REFERENCES blog_post(id) ON UPDATE CASCADE ON DELETE CASCADE
+    post_id     bigint NOT NULL,
+    category_id bigint NOT NULL,
+    CONSTRAINT pk_post_post_category PRIMARY KEY (post_id, category_id),
+    CONSTRAINT fk_post_post_category_category_id FOREIGN KEY (category_id) REFERENCES tech_blog.post_category (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_post_post_category_post_id FOREIGN KEY (post_id) REFERENCES tech_blog.blog_post (id) ON UPDATE CASCADE ON DELETE CASCADE
 );

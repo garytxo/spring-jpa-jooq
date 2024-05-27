@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.gmurray</groupId>
         <artifactId>tech-blog</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <groupId>com.gmurray</groupId>
@@ -17,6 +17,10 @@
         <dependency>
             <groupId>com.gmurray</groupId>
             <artifactId>tech-blog-data</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gmurray</groupId>
+            <artifactId>tech-blog-shared</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

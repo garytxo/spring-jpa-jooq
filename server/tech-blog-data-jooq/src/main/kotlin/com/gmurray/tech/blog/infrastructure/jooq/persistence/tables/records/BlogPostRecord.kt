@@ -4,9 +4,9 @@
 package com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.records
 
 
-import com.gmurray.tech.blog.infrastructure.jooq.codegen.TechBlogAuditableAwareRecord
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.BlogPost
 import com.gmurray.tech.blog.infrastructure.jooq.persistence.tables.interfaces.IBlogPost
+import com.gmurray.tech.blog.infrastructure.persistence.jooq.codegen.TechBlogAuditableAwareRecord
 import com.gmurray.tech.blog.infrastructure.persistence.shared.BlogPostStatus
 
 import java.time.LocalDateTime

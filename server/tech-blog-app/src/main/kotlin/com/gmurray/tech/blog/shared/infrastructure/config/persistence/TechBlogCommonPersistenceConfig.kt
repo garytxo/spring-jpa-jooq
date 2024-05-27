@@ -1,8 +1,8 @@
 package com.gmurray.tech.blog.shared.infrastructure.config.persistence
 
+import com.gmurray.tech.blog.infrastructure.persistence.jooq.listeners.JooqAuditRecordListener
+import com.gmurray.tech.blog.infrastructure.persistence.jooq.listeners.SpringExceptionTranslationExecuteListener
 import com.gmurray.tech.blog.shared.infrastructure.config.persistence.jooq.JooqUserAuditAwareService
-import com.volkswagenag.recall2.datatransfer.shared.infrastructure.persistence.jooq.listener.JooqAuditRecordListener
-import com.volkswagenag.recall2.datatransfer.shared.infrastructure.persistence.jooq.listener.SpringExceptionTranslationExecuteListener
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jooq.ExecuteListenerProvider

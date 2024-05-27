@@ -1,6 +1,6 @@
 version: "3"
 ##------------------------
-# Recall data-transfer Postgres 12 Docker service
+# Demo Tech Blog Postgres 12 Docker service
 # * Postgres service on port 5436 with databases:
 #    - demo_tech_blog
 #    - demo_tech_blog_test

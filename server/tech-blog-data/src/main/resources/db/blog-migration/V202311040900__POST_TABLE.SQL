@@ -20,7 +20,7 @@ CREATE TABLE tech_blog.blog_post
     row_updated_by varchar(255) DEFAULT NULL,
     row_updated_on timestamp    DEFAULT now(),
     CONSTRAINT pk_blog_post PRIMARY KEY (id),
-    CONSTRAINT fk_blog_author FOREIGN KEY (author_id) REFERENCES blog_author(id)
+    CONSTRAINT fk_blog_author FOREIGN KEY (author_id) REFERENCES tech_blog.blog_author (id)
 
 
 );

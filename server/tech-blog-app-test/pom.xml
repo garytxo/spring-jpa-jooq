@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.gmurray</groupId>
         <artifactId>tech-blog</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>tech-blog-app-test</artifactId>
@@ -50,7 +50,6 @@
         <dependency>
             <groupId>com.gmurray</groupId>
             <artifactId>tech-blog-app</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.cloud</groupId>

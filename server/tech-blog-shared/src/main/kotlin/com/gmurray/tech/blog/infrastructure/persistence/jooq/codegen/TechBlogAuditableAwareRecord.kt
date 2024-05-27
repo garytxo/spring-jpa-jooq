@@ -1,4 +1,4 @@
-package com.gmurray.tech.blog.infrastructure.jooq.codegen
+package com.gmurray.tech.blog.infrastructure.persistence.jooq.codegen
 
 import java.time.LocalDateTime
 

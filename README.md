@@ -8,6 +8,7 @@ with [JOOQ](https://www.jooq.org)
 using spring [profiles](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.profiles)
 feature.
 
+
 ## What is JOOQ
 
 The following is to illustrate some of the JOOQ basic features :
